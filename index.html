@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>АТГ СЕРВІС БУД — Модульні будинки нового покоління</title>
+  <meta name="description" content="Сучасні модульні будинки для життя та бізнесу. Від ідеї до монтажу. 3 класи комплектації або індивідуальне проектування.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwindcss.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {50:'#fff8f0',100:'#fff0db',200:'#ffddb3',300:'#ffc480',400:'#ffa94d',500:'#ff8c1a',600:'#e67300',700:'#b35900',800:'#804000',900:'#4d2600'},
+            surface: {50:'#fafbfc',100:'#f4f6f8',200:'#ebeef2',300:'#dde1e7',400:'#c4cad3'}
+          },
+          fontFamily: {
+            display: ['Outfit','sans-serif'],
+            body: ['DM Sans','sans-serif'],
+            mono: ['JetBrains Mono','monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- No Three.js needed — image-based hero -->
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;color:#1a1e2e;background:#fff;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    ::-webkit-scrollbar{width:5px}
+    ::-webkit-scrollbar-track{background:#f4f6f8}
+    ::-webkit-scrollbar-thumb{background:#c4cad3;border-radius:3px}
+    .reveal{opacity:0;transform:translateY(50px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+    .reveal.vis{opacity:1;transform:translateY(0)}
+    .rd1{transition-delay:.08s}.rd2{transition-delay:.16s}.rd3{transition-delay:.24s}.rd4{transition-delay:.32s}
+
+    /* ── Hero image-based animations ── */
+    .hero-section{position:relative;min-height:100vh;overflow:hidden;background:#0d0d0f}
+    .hero-img-wrap{position:absolute;inset:-40px;z-index:0;overflow:hidden}
+    .hero-img{width:100%;height:100%;object-fit:cover;object-position:center 60%;animation:heroKenBurns 25s ease-in-out infinite alternate;will-change:transform;filter:brightness(1.02) contrast(1.02)}
+    @keyframes heroKenBurns{0%{transform:scale(1.05) translate(0,0)}50%{transform:scale(1.12) translate(-1%,-1%)}100%{transform:scale(1.08) translate(1%,0.5%)}}
+    .hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(135deg,rgba(10,10,14,.82) 0%,rgba(10,10,14,.5) 40%,rgba(10,10,14,.15) 70%,rgba(10,10,14,.05) 100%)}
+    .hero-overlay-bottom{position:absolute;bottom:0;left:0;right:0;height:200px;z-index:1;background:linear-gradient(0deg,rgba(10,10,14,.8) 0%,transparent 100%)}
+    .hero-vignette{position:absolute;inset:0;z-index:1;box-shadow:inset 0 0 150px 40px rgba(0,0,0,.25)}
+    /* Floating light orbs */
+    .hero-orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:2;mix-blend-mode:screen}
+    @keyframes orbFloat1{0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.1)}66%{transform:translate(-15px,15px) scale(.95)}100%{transform:translate(0,0) scale(1)}}
+    @keyframes orbFloat2{0%{transform:translate(0,0) scale(1)}50%{transform:translate(-25px,20px) scale(1.15)}100%{transform:translate(0,0) scale(1)}}
+    /* Sparkle particles */
+    .hero-particles{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+    .sparkle{position:absolute;width:3px;height:3px;background:#fff;border-radius:50%;opacity:0;animation:sparkleAnim var(--dur) var(--delay) infinite}
+    @keyframes sparkleAnim{0%{opacity:0;transform:translateY(0) scale(0)}15%{opacity:.8;transform:translateY(-10px) scale(1)}85%{opacity:.6;transform:translateY(-80px) scale(.7)}100%{opacity:0;transform:translateY(-100px) scale(0)}}
+    /* Parallax layer for mouse */
+    .hero-parallax{transition:transform .15s ease-out;will-change:transform}
+
+    .cta-primary{background:linear-gradient(135deg,#ff8c1a,#ff6b00);box-shadow:0 4px 25px rgba(255,140,26,.3),0 1px 3px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.16,1,.3,1)}
+    .cta-primary:hover{box-shadow:0 8px 40px rgba(255,140,26,.45),0 2px 6px rgba(0,0,0,.1);transform:translateY(-2px)}
+    .glass{background:rgba(255,255,255,.75);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.8);transition:all .4s cubic-bezier(.16,1,.3,1)}
+    .glass:hover{background:rgba(255,255,255,.92);transform:translateY(-8px);box-shadow:0 25px 60px rgba(0,0,0,.08)}
+    .photo-tab{transition:all .25s;cursor:pointer}
+    .photo-tab.active{background:#ff8c1a;color:#fff}
+    .bp-bg{background-image:linear-gradient(rgba(59,130,246,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.06) 1px,transparent 1px);background-size:20px 20px}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+    .cblink::after{content:'▊';animation:blink 1s infinite;color:#ff8c1a;margin-left:2px}
+    @keyframes pr{0%{transform:scale(.95);opacity:1}70%{transform:scale(1.3);opacity:0}100%{transform:scale(.95);opacity:0}}
+    .ai-pulse{animation:pr 2s ease-out infinite}
+    .quiz-bar{transition:width .5s cubic-bezier(.16,1,.3,1)}
+    .icon-box{transition:all .35s cubic-bezier(.16,1,.3,1)}
+    .icon-box:hover{transform:scale(1.08) rotate(-2deg)}
+    .mob-menu{transition:all .3s cubic-bezier(.16,1,.3,1)}
+    .mob-menu.closed{opacity:0;pointer-events:none;transform:translateY(-10px)}
+    .viber-bg{background:#7360f2}
+    .mesh-bg{background:radial-gradient(ellipse at 20% 50%,rgba(255,140,26,.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(59,130,246,.06) 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,rgba(139,92,246,.05) 0%,transparent 50%),linear-gradient(180deg,#f8fafc,#fff)}
+
+    /* ── Card Slider ── */
+    .card-slider{position:relative;overflow:hidden;aspect-ratio:4/3}
+    .card-slider .slides{display:flex;transition:transform .4s cubic-bezier(.16,1,.3,1);height:100%}
+    .card-slider .slides img{min-width:100%;height:100%;object-fit:cover;cursor:zoom-in}
+    .card-slider .slide-btn{position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,.15);opacity:0;transition:opacity .25s}
+    .card-slider:hover .slide-btn{opacity:1}
+    .slide-btn.prev{left:8px}
+    .slide-btn.next{right:8px}
+    .slide-btn svg{width:16px;height:16px;stroke:#1a1e2e;stroke-width:2.5;fill:none}
+    .card-dots{display:flex;gap:5px;justify-content:center;position:absolute;bottom:10px;left:50%;transform:translateX(-50%);z-index:5}
+    .card-dots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer;transition:all .25s}
+    .card-dots span.active{background:#ff8c1a;width:20px;border-radius:4px}
+
+    /* ── Lightbox ── */
+    .lightbox{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.92);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+    .lightbox.show{display:flex;opacity:1}
+    .lightbox img{max-width:92vw;max-height:90vh;object-fit:contain;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+    .lightbox .lb-close{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.1);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+    .lightbox .lb-close:hover{background:rgba(255,255,255,.2)}
+    .lightbox .lb-close svg{width:24px;height:24px;stroke:#fff;stroke-width:2;fill:none}
+    .lightbox .lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.1);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+    .lightbox .lb-nav:hover{background:rgba(255,255,255,.25)}
+    .lightbox .lb-nav svg{width:20px;height:20px;stroke:#fff;stroke-width:2.5;fill:none}
+    .lightbox .lb-prev{left:16px}
+    .lightbox .lb-next{right:16px}
+    .lightbox .lb-counter{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.6);font-size:13px;font-weight:500}
+
+    /* ── Model Card (reference style) ── */
+    .model-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.06);border:1px solid #ebeef2;transition:box-shadow .3s}
+    .model-card:hover{box-shadow:0 8px 30px rgba(0,0,0,.1)}
+    .model-badges{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;z-index:5;pointer-events:none}
+    .badge-price{background:rgba(26,30,46,.85);backdrop-filter:blur(6px);color:#fff;font-size:12px;font-weight:700;padding:6px 12px;border-radius:8px}
+    .badge-area{background:#ff8c1a;color:#fff;font-size:12px;font-weight:700;padding:6px 12px;border-radius:8px}
+    .model-body{padding:20px}
+    .model-title{font-family:'Outfit',sans-serif;font-weight:800;font-size:20px;color:#1a1e2e;text-transform:uppercase;letter-spacing:.02em;margin-bottom:16px}
+    .model-specs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+    .spec-item{display:flex;align-items:center;gap:8px;font-size:13px;color:#4b5563}
+    .spec-item svg{width:16px;height:16px;color:#94a3b8;flex-shrink:0}
+    .spec-item strong{color:#1a1e2e;font-weight:600}
+    .model-plan{margin-bottom:16px;border-radius:10px;overflow:hidden;border:1px solid #ebeef2}
+    .model-plan img{width:100%;display:block;cursor:zoom-in;transition:opacity .2s}
+    .model-plan img:hover{opacity:.92}
+    .model-plan .plan-placeholder{aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f8fafc}
+    .info-badge{font-size:12px;font-weight:500;padding:10px 14px;border-radius:10px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+    .info-badge svg{width:16px;height:16px;flex-shrink:0}
+    .info-green{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0}
+    .info-yellow{background:#fffbeb;color:#92400e;border:1px solid #fde68a}
+    .info-orange{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
+    .detail-btn{display:flex;align-items:center;gap:8px;background:#f8fafc;border:2px solid #e5e7eb;color:#1a1e2e;font-weight:600;font-size:14px;padding:12px 20px;border-radius:12px;cursor:pointer;transition:all .2s;margin-top:4px;width:100%;justify-content:center}
+    .detail-btn:hover{border-color:#ff8c1a;background:#fff8f0;color:#ff8c1a}
+    .detail-btn svg{width:18px;height:18px}
+
+    /* ── Hit card (bestseller) ── */
+    .model-card.hit{border:2px solid #ff8c1a;box-shadow:0 4px 24px rgba(255,140,26,.15);position:relative;transform:scale(1.02)}
+    .model-card.hit:hover{box-shadow:0 8px 36px rgba(255,140,26,.22)}
+    .hit-label{text-align:center;color:#ff8c1a;font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:0 0 8px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .model-card.hit .detail-btn{background:linear-gradient(135deg,#ff8c1a,#f59e0b);border:none;color:#fff;font-weight:700}
+    .model-card.hit .detail-btn:hover{background:linear-gradient(135deg,#f59e0b,#ff8c1a);box-shadow:0 4px 16px rgba(255,140,26,.35)}
+  </style>
+</head>
+<body>
+
+<!-- ══════ HEADER ══════ -->
+<header id="hdr" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background:transparent">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-5 py-4 lg:py-5">
+    <a href="#" class="flex items-center gap-2.5 group">
+      <img id="logo-img" src="images/logo.png" alt="АТГ Сервіс Буд" class="h-10 sm:h-12 w-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)] transition-all duration-500">
+      <div class="hidden sm:block">
+        <span id="logo-text" class="font-display font-bold text-white text-sm tracking-tight leading-none block transition-colors duration-500">АТГ СЕРВІС БУД</span>
+        <span id="logo-sub" class="text-[10px] text-white/50 font-medium tracking-wider uppercase transition-colors duration-500">Modular Homes</span>
+      </div>
+    </a>
+    <div class="hidden md:flex items-center gap-4">
+      <div id="social-icons" class="flex items-center gap-1.5">
+        <a href="viber://chat?number=%2B380XXXXXXXXX" class="w-9 h-9 rounded-full bg-white/10 hover:bg-[#7360f2] text-white/70 hover:text-white flex items-center justify-center transition-all"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.27 2 11.5c0 2.59 1.13 4.95 2.97 6.66V22l3.47-1.96c1.2.29 2.36.46 3.56.46 5.52 0 10-4.27 10-9.5S17.52 2 12 2z"/></svg></a>
+        <a href="https://t.me/" class="w-9 h-9 rounded-full bg-white/10 hover:bg-[#2AABEE] text-white/70 hover:text-white flex items-center justify-center transition-all"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4.8 6.8l-1.64 7.74c-.12.56-.45.7-.91.43l-2.52-1.86-1.22 1.17c-.13.13-.25.25-.51.25l.18-2.57 4.68-4.23c.2-.18-.04-.28-.31-.1L8.55 13.4l-2.48-.77c-.54-.17-.55-.54.11-.8l9.7-3.74c.45-.16.84.11.7.8z"/></svg></a>
+        <a href="https://wa.me/" class="w-9 h-9 rounded-full bg-white/10 hover:bg-[#25D366] text-white/70 hover:text-white flex items-center justify-center transition-all"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12 2z"/></svg></a>
+      </div>
+      <button onclick="scrollToQuiz()" class="cta-primary text-white font-semibold text-sm px-6 py-2.5 rounded-full">Дізнатись вартість</button>
+    </div>
+    <button id="burger-btn" onclick="toggleMob()" class="md:hidden w-10 h-10 flex items-center justify-center text-white rounded-lg hover:bg-white/10 transition"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+  </div>
+  <div id="mob" class="mob-menu closed md:hidden bg-white/95 backdrop-blur-xl border-t border-slate-100 px-5 pb-5 shadow-2xl">
+    <div class="flex items-center justify-center gap-3 py-4">
+      <a href="viber://chat?number=%2B380XXXXXXXXX" class="viber-bg text-white text-xs font-semibold px-5 py-2.5 rounded-full">Viber</a>
+      <a href="https://t.me/" class="bg-[#2AABEE] text-white text-xs font-semibold px-5 py-2.5 rounded-full">Telegram</a>
+      <a href="https://wa.me/" class="bg-[#25D366] text-white text-xs font-semibold px-5 py-2.5 rounded-full">WhatsApp</a>
+    </div>
+    <button onclick="scrollToQuiz();toggleMob()" class="w-full cta-primary text-white font-semibold py-3 rounded-full">Дізнатись вартість</button>
+  </div>
+</header>
+
+<!-- ══════ HERO ══════ -->
+<section id="hero" class="hero-section flex items-center">
+  <!-- Background image with Ken Burns animation -->
+  <div class="hero-img-wrap hero-parallax" id="hero-parallax">
+    <img src="images/hero-house.jpg" alt="Сучасний модульний будинок з панорамними вікнами" class="hero-img" loading="eager">
+  </div>
+
+  <!-- Layered overlays for cinematic depth -->
+  <div class="hero-overlay"></div>
+  <div class="hero-overlay-bottom"></div>
+  <div class="hero-vignette"></div>
+
+  <!-- Floating light orbs -->
+  <div class="hero-orb" style="width:350px;height:350px;background:rgba(255,160,50,.12);top:15%;right:25%;animation:orbFloat1 12s ease-in-out infinite"></div>
+  <div class="hero-orb" style="width:250px;height:250px;background:rgba(100,160,255,.08);bottom:20%;left:10%;animation:orbFloat2 15s ease-in-out infinite"></div>
+  <div class="hero-orb" style="width:200px;height:200px;background:rgba(255,200,100,.06);top:50%;right:5%;animation:orbFloat1 18s ease-in-out infinite reverse"></div>
+
+  <!-- Sparkle particles -->
+  <div class="hero-particles" id="hero-sparkles"></div>
+
+  <!-- Content -->
+  <div class="relative z-10 max-w-7xl mx-auto px-5 py-32 lg:py-0 w-full">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Left column: text -->
+      <div class="max-w-xl">
+        <div class="reveal">
+          <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/15 text-xs font-semibold tracking-wide uppercase px-4 py-2 rounded-full mb-6 text-white/70 shadow-lg">
+            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+            Модульні будинки нового покоління
+          </div>
+        </div>
+        <h1 class="font-display font-extrabold text-white text-[2.1rem] sm:text-5xl lg:text-[3.5rem] leading-[1.08] mb-6 reveal rd1" style="text-shadow:0 2px 30px rgba(0,0,0,.3)">
+          Сучасні модульні будинки для&nbsp;життя
+          <span class="relative inline-block">та&nbsp;бізнесу<svg class="absolute -bottom-2 left-0 w-full h-3 text-brand-400/60" viewBox="0 0 200 12" preserveAspectRatio="none"><path d="M0 8Q50 0 100 8Q150 16 200 8" stroke="currentColor" stroke-width="3" fill="none"/></svg></span>
+          <span class="block text-brand-400 mt-1">Від ідеї до монтажу за&nbsp;30&nbsp;днів.</span>
+        </h1>
+        <p class="text-white/65 text-base lg:text-lg leading-relaxed mb-8 reveal rd2">3 класи комплектації або індивідуальне проектування. Не&nbsp;потребують капітального фундаменту.</p>
+        <div class="flex flex-col sm:flex-row gap-3 reveal rd3">
+          <button onclick="scrollToQuiz()" class="cta-primary text-white font-semibold text-base px-8 py-4 rounded-full flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+            Розрахувати вартість
+          </button>
+          <a href="#classes" class="text-white/80 hover:text-white border border-white/20 hover:border-white/40 font-medium text-base px-8 py-4 rounded-full text-center transition-all bg-white/5 backdrop-blur-md">Комплектації ↓</a>
+        </div>
+        <!-- AI Demo -->
+        <div class="mt-8 reveal rd4">
+          <div class="bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl max-w-md">
+            <div class="flex items-center gap-2 mb-2.5">
+              <div class="relative">
+                <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center"><svg class="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+                <div class="absolute inset-0 rounded-lg bg-brand-400/30 ai-pulse"></div>
+              </div>
+              <div><span class="text-xs font-semibold text-white/90">АТГ AI Асистент</span><span class="block text-[10px] text-green-400 font-medium">● Онлайн</span></div>
+            </div>
+            <div id="ai-text" class="text-sm text-white/70 leading-relaxed min-h-[40px]"><span class="cblink"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right column: empty for image focus -->
+      <div class="hidden lg:block"></div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/40 text-xs z-10 reveal">
+    <span class="font-medium">Гортайте</span>
+    <div class="w-5 h-8 rounded-full border-2 border-white/30 flex justify-center pt-1.5"><div class="w-1 h-2 bg-brand-400 rounded-full animate-bounce"></div></div>
+  </div>
+</section>
+
+<!-- ══════ 3 CLASSES ══════ -->
+<section id="classes" class="py-20 lg:py-28 bg-surface-50">
+  <div class="max-w-7xl mx-auto px-5">
+    <div class="text-center mb-14 reveal">
+      <div class="inline-flex items-center gap-2 bg-brand-50 text-brand-600 text-xs font-semibold tracking-wider uppercase px-4 py-1.5 rounded-full mb-4">
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+        Вітрина
+      </div>
+      <h2 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-[2.8rem] text-slate-900">Три класи комплектації</h2>
+      <p class="text-slate-500 mt-3 max-w-lg mx-auto">Оберіть оптимальний варіант або створіть індивідуальний проект.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6 lg:gap-7">
+
+      <!-- СТАНДАРТ -->
+      <div class="model-card reveal">
+        <div class="card-slider" data-slider="s">
+          <div class="slides">
+            <img src="images/1-1.png" alt="Модуль Стандарт — фасад" loading="lazy">
+            <img src="images/1-2.png" alt="Модуль Стандарт — бічний" loading="lazy">
+            <img src="images/1-3.png" alt="Модуль Стандарт — інтер'єр" loading="lazy">
+            <img src="images/1-4.png" alt="Модуль Стандарт — вид" loading="lazy">
+          </div>
+          <div class="model-badges">
+            <span class="badge-price">від 197 $ / м²</span>
+            <span class="badge-area">Площа: 24 м²</span>
+          </div>
+          <button class="slide-btn prev" onclick="slideCard('s',-1)"><svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg></button>
+          <button class="slide-btn next" onclick="slideCard('s',1)"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+          <div class="card-dots" data-dots="s">
+            <span class="active" onclick="goSlide('s',0)"></span>
+            <span onclick="goSlide('s',1)"></span>
+            <span onclick="goSlide('s',2)"></span>
+            <span onclick="goSlide('s',3)"></span>
+          </div>
+        </div>
+        <div class="model-body">
+          <h3 class="model-title">Клас Стандарт</h3>
+          <div class="model-specs">
+            <div class="spec-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M2 22h20M3 22V6l9-4 9 4v16M9 22v-6h6v6"/></svg><span><strong>Кімнат:</strong> 1</span></div>
+            <div class="spec-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16v16H4z"/><path d="M4 12h16M12 4v16" stroke-dasharray="2 2"/></svg><span><strong>Габарити:</strong> 6 × 4 м</span></div>
+            <div class="spec-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4"/></svg><span><strong>+ тераса</strong></span></div>
+            <div class="spec-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg><span><strong>Площа:</strong> 24 м²</span></div>
+          </div>
+          <div class="model-plan">
+            <img src="images/1-5.png" alt="Планування Стандарт" class="plan-img" loading="lazy">
+          </div>
+          <div class="info-badge info-green"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Строк будівництва від 30 днів</div>
+          <div class="info-badge info-green"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M8 7h12l-3 9H5L2 3H1"/><circle cx="7" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/></svg>Монтаж / Встановлення: від 1 до 3 днів</div>
+          <div class="info-badge info-yellow"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg>Доставка і фундамент — оплачується окремо</div>
+          <button onclick="scrollToQuiz()" class="detail-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>Хочу такий</button>
+        </div>
+      </div>
+
+      <!-- КОМФОРТ -->
+      <div class="reveal rd1">
+      <div class="model-card hit">
+        <div class="card-slider" data-slider="c">
+          <div class="slides">
+            <img src="images/2-1.jpg" alt="Модуль Комфорт — фасад" loading="lazy">
+            <img src="images/2-3.png" alt="Модуль Комфорт — вид 2" loading="lazy">
+            <img src="images/2-4.png" alt="Модуль Комфорт — вид 3" loading="lazy">
+            <img src="images/2-5.png" alt="Модуль Комфорт — інтер'єр" loading="lazy">
+          </div>
+          <div class="model-badges">
+            <span class="badge-price">від 397 $ / м²</span>
+            <span class="badge-area">Площа: 58 м²</span>
+          </div>
+          <button class="slide-btn prev" onclick="slideCard('c',-1)"><svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg></button>
+          <button class="slide-btn next" onclick="slideCard('c',1)"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+          <div class="card-dots" data-dots="c">
+            <span class="active" onclick="goSlide('c',0)"></span>
+            <span onclick="goSlide('c',1)"></span>
+            <span onclick="goSlide('c',2)"></span>
+            <span onclick="goSlide('c',3)"></span>
+          </div>
+        </div>
+        <div class="model-body">
+          <h3 class="model-title">Клас Комфорт</h3>
+          <div class="model-specs">
+            <div class="spec-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M2 22h20M3 22V6l9-4 9 4v16M9 22v-6h6v6"/></svg><span><strong>Кімнат:</strong> 2</span></div>
+            <div class="spec-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16v16H4z"/><path d="M4 12h16M12 4v16" stroke-dasharray="2 2"/></svg><span><strong>Габарити:</strong> 7,15 × 8,15</span></div>
+            <div class="spec-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4"/></svg><span><strong>+ гардеробна</strong></span></div>
+            <div class="spec-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg><span><strong>Площа:</strong> 58 м²</span></div>
+          </div>
+          <div class="model-plan">
+            <img src="images/2-2.jpg" alt="Планування Комфорт" class="plan-img" loading="lazy">
+          </div>
+          <div class="info-badge info-green"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Строк будівництва від 45 днів</div>
+          <div class="info-badge info-green"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M8 7h12l-3 9H5L2 3H1"/><circle cx="7" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/></svg>Монтаж / Встановлення: від 2 до 5 днів</div>
+          <div class="info-badge info-yellow"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg>Доставка і фундамент — оплачується окремо</div>
+          <button onclick="scrollToQuiz()" class="detail-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>Хочу такий</button>
+        </div>
+      </div>
+      </div>
+
+      <!-- ПРЕМІУМ -->
+      <div class="model-card reveal rd2">
+        <div class="card-slider" data-slider="p">
+          <div class="slides">
+            <img src="images/3-1.jpg" alt="Модуль Преміум — фасад" loading="lazy">
+            <img src="images/3-3.jpg" alt="Модуль Преміум — вид 2" loading="lazy">
+            <img src="images/3-4.jpg" alt="Модуль Преміум — вид 3" loading="lazy">
+            <img src="images/3-5.jpg" alt="Модуль Преміум — вид 4" loading="lazy">
+          </div>
+          <div class="model-badges">
+            <span class="badge-price">від 597 $ / м²</span>
+            <span class="badge-area">Площа: 90 м²</span>
+          </div>
+          <button class="slide-btn prev" onclick="slideCard('p',-1)"><svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg></button>
+          <button class="slide-btn next" onclick="slideCard('p',1)"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+          <div class="card-dots" data-dots="p">
+            <span class="active" onclick="goSlide('p',0)"></span>
+            <span onclick="goSlide('p',1)"></span>
+            <span onclick="goSlide('p',2)"></span>
+            <span onclick="goSlide('p',3)"></span>
+          </div>
+        </div>
+        <div class="model-body">
+          <h3 class="model-title">Клас Преміум</h3>
+          <div class="model-specs">
+            <div class="spec-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M2 22h20M3 22V6l9-4 9 4v16M9 22v-6h6v6"/></svg><span><strong>Кімнат:</strong> 3</span></div>
+            <div class="spec-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16v16H4z"/><path d="M4 12h16M12 4v16" stroke-dasharray="2 2"/></svg><span><strong>Габарити:</strong> 8,6 × 10,5</span></div>
+            <div class="spec-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4"/></svg><span><strong>+ 2 санвузли</strong></span></div>
+            <div class="spec-item"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg><span><strong>Площа:</strong> 90 м²</span></div>
+          </div>
+          <div class="model-plan">
+            <img src="images/3-2.jpg" alt="Планування Преміум" class="plan-img" loading="lazy">
+          </div>
+          <div class="info-badge info-green"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Строк будівництва від 60 днів</div>
+          <div class="info-badge info-green"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M8 7h12l-3 9H5L2 3H1"/><circle cx="7" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/></svg>Монтаж / Встановлення: від 2 до 10 днів</div>
+          <div class="info-badge info-yellow"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg>Доставка і фундамент — оплачується окремо</div>
+          <button onclick="scrollToQuiz()" class="detail-btn"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>Хочу такий</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ WHY MODULAR ══════ -->
+<section id="why" class="py-20 lg:py-28 bg-white">
+  <div class="max-w-7xl mx-auto px-5">
+    <div class="text-center mb-14 reveal">
+      <div class="inline-flex items-center gap-2 bg-brand-50 text-brand-600 text-xs font-semibold tracking-wider uppercase px-4 py-1.5 rounded-full mb-4"><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Переваги</div>
+      <h2 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-[2.8rem] text-slate-900">Чому модульна технологія?</h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="group bg-surface-50 hover:bg-white rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50 reveal">
+        <div class="icon-box w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center mb-5 shadow-lg shadow-emerald-500/20">
+          <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 32 32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="14" width="12" height="14" rx="1.5"/><path d="M4 14l6-5 6 5"/><rect x="7" y="18" width="3" height="3" rx=".5"/><path d="M18 21h3m0 0l-1.5-1.5M21 21l-1.5 1.5"/><rect x="23" y="18" width="6" height="10" rx="1"/><path d="M22 18l4-3 4 3"/><path d="M26 12v2M25 13h2" stroke-width="1.5"/></svg>
+        </div>
+        <h3 class="font-display font-semibold text-base text-slate-900 mb-2">Ніякого бруду на ділянці</h3>
+        <p class="text-slate-500 text-sm leading-relaxed">Збираємо в цеху — привозимо готовий будинок. Ділянка чиста.</p>
+      </div>
+      <div class="group bg-surface-50 hover:bg-white rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50 reveal rd1">
+        <div class="icon-box w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mb-5 shadow-lg shadow-amber-500/20">
+          <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 32 32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="3.5"/><path d="M10 4v1.5M10 14.5V16M4 10h1.5M14.5 10H16M5.76 5.76l1.06 1.06M13.18 13.18l1.06 1.06M14.24 5.76l-1.06 1.06M6.82 13.18l-1.06 1.06"/><path d="M24 8v16M20 12l4-4 4 4M20 20l4 4 4-4"/><path d="M8 22l8-5 8 5v6H8v-6z"/></svg>
+        </div>
+        <h3 class="font-display font-semibold text-base text-slate-900 mb-2">Енергоефективність</h3>
+        <p class="text-slate-500 text-sm leading-relaxed">Взимку тепло, влітку прохолодно. Краще за цеглу.</p>
+      </div>
+      <div class="group bg-surface-50 hover:bg-white rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50 reveal rd2">
+        <div class="icon-box w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center mb-5 shadow-lg shadow-blue-500/20">
+          <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 32 32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 22a11 11 0 0120 0"/><path d="M16 22l5-9" stroke-width="2"/><circle cx="16" cy="22" r="2" fill="currentColor"/><path d="M4 16h3M25 16h3M6.8 9l2.1 2.1M23.2 9l-2.1 2.1"/></svg>
+        </div>
+        <h3 class="font-display font-semibold text-base text-slate-900 mb-2">Швидкість — 30 днів</h3>
+        <p class="text-slate-500 text-sm leading-relaxed">Не чекати роками. Від замовлення до заїзду — від 30 днів.</p>
+      </div>
+      <div class="group bg-surface-50 hover:bg-white rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50 reveal rd3">
+        <div class="icon-box w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-400 to-purple-600 flex items-center justify-center mb-5 shadow-lg shadow-violet-500/20">
+          <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 32 32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="18" width="20" height="8" rx="1.5"/><circle cx="7" cy="28" r="2.5"/><circle cx="17" cy="28" r="2.5"/><path d="M22 18h5l3 4v4h-6"/><circle cx="27" cy="28" r="2.5"/><rect x="5" y="11" width="14" height="7" rx="1"/><path d="M5 11l7-5 7 5"/></svg>
+        </div>
+        <h3 class="font-display font-semibold text-base text-slate-900 mb-2">Мобільність</h3>
+        <p class="text-slate-500 text-sm leading-relaxed">Можна демонтувати та перевезти на іншу ділянку.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ QUIZ ══════ -->
+<section id="quiz" class="py-20 lg:py-28 relative overflow-hidden" style="background:linear-gradient(135deg,#0f172a,#1e293b,#0f172a)">
+  <div class="absolute inset-0 opacity-30" style="background-image:radial-gradient(circle at 20% 30%,rgba(255,140,26,.12) 0%,transparent 50%),radial-gradient(circle at 80% 70%,rgba(99,102,241,.1) 0%,transparent 50%)"></div>
+  <div class="relative z-10 max-w-2xl mx-auto px-5">
+    <div class="text-center mb-10 reveal">
+      <div class="inline-flex items-center gap-2 bg-brand-500/10 text-brand-400 text-xs font-semibold tracking-wider uppercase px-4 py-1.5 rounded-full mb-4 border border-brand-500/20"><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>Безкоштовний розрахунок</div>
+      <h2 class="font-display font-extrabold text-2xl sm:text-3xl lg:text-4xl text-white">Дізнайтесь вартість вашого будинку</h2>
+      <p class="text-slate-400 mt-3 text-sm sm:text-base max-w-md mx-auto">5 питань — і ми надішлемо точний розрахунок у Viber.</p>
+    </div>
+    <div class="bg-slate-800/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-700/40 shadow-2xl reveal">
+      <div class="mb-8"><div class="flex justify-between text-xs font-medium mb-2"><span id="ql" class="text-slate-400">Крок 1 з 5</span><span id="qp" class="text-brand-400">20%</span></div><div class="h-1.5 bg-slate-700 rounded-full overflow-hidden"><div id="qb" class="quiz-bar h-full rounded-full" style="width:20%;background:linear-gradient(90deg,#ff8c1a,#ff6b00)"></div></div></div>
+      <div id="qc"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ STEPS ══════ -->
+<section class="py-20 lg:py-28 bg-surface-50">
+  <div class="max-w-7xl mx-auto px-5">
+    <div class="text-center mb-14 reveal">
+      <div class="inline-flex items-center gap-2 bg-brand-50 text-brand-600 text-xs font-semibold tracking-wider uppercase px-4 py-1.5 rounded-full mb-4"><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>Прозорість</div>
+      <h2 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-[2.8rem] text-slate-900">Як ми працюємо</h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+      <div class="hidden lg:block absolute top-12 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-brand-400 via-brand-500 to-brand-400 rounded-full opacity-30"></div>
+      <div class="flex flex-col items-center text-center reveal">
+        <div class="w-24 h-24 rounded-3xl bg-white border border-slate-200 flex items-center justify-center relative shadow-lg shadow-slate-200/30 mb-5">
+          <svg class="w-10 h-10 text-brand-500" fill="none" viewBox="0 0 40 40" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="8" y="6" width="24" height="28" rx="3"/><path d="M14 12h12M14 17h12M14 22h8"/><circle cx="28" cy="28" r="5" fill="none"/><path d="M28 25v3l2 1"/></svg>
+          <div class="absolute -top-2 -right-2 w-7 h-7 bg-brand-500 text-white text-xs font-bold rounded-lg flex items-center justify-center shadow">1</div>
+        </div>
+        <h3 class="font-display font-semibold text-base text-slate-900 mb-2">Ваша заявка</h3>
+        <p class="text-slate-500 text-sm max-w-[200px]">Відповімо за 15 хвилин.</p>
+      </div>
+      <div class="flex flex-col items-center text-center reveal rd1">
+        <div class="w-24 h-24 rounded-3xl bg-white border border-slate-200 flex items-center justify-center relative shadow-lg shadow-slate-200/30 mb-5">
+          <svg class="w-10 h-10 text-brand-500" fill="none" viewBox="0 0 40 40" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="6" y="8" width="28" height="24" rx="2"/><line x1="6" y1="20" x2="34" y2="20"/><line x1="20" y1="8" x2="20" y2="32"/><path d="M30 4l4 4-8 8-4-1 1-4z"/></svg>
+          <div class="absolute -top-2 -right-2 w-7 h-7 bg-brand-500 text-white text-xs font-bold rounded-lg flex items-center justify-center shadow">2</div>
+        </div>
+        <h3 class="font-display font-semibold text-base text-slate-900 mb-2">Проект і договір</h3>
+        <p class="text-slate-500 text-sm max-w-[200px]">Узгоджуємо кошторис.</p>
+      </div>
+      <div class="flex flex-col items-center text-center reveal rd2">
+        <div class="w-24 h-24 rounded-3xl bg-white border border-slate-200 flex items-center justify-center relative shadow-lg shadow-slate-200/30 mb-5">
+          <svg class="w-10 h-10 text-brand-500" fill="none" viewBox="0 0 40 40" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="4" y="16" width="32" height="20" rx="2"/><path d="M4 16l6-6v6l6-6v6l6-6v6l6-6v6"/><circle cx="20" cy="26" r="4"/><circle cx="20" cy="26" r="1.5" fill="currentColor"/></svg>
+          <div class="absolute -top-2 -right-2 w-7 h-7 bg-brand-500 text-white text-xs font-bold rounded-lg flex items-center justify-center shadow">3</div>
+        </div>
+        <h3 class="font-display font-semibold text-base text-slate-900 mb-2">Виробництво</h3>
+        <p class="text-slate-500 text-sm max-w-[200px]">Фото-звіти щодня.</p>
+      </div>
+      <div class="flex flex-col items-center text-center reveal rd3">
+        <div class="w-24 h-24 rounded-3xl bg-white border border-slate-200 flex items-center justify-center relative shadow-lg shadow-slate-200/30 mb-5">
+          <svg class="w-10 h-10 text-brand-500" fill="none" viewBox="0 0 40 40" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 36V12h4v24"/><path d="M10 14h22l-6 6"/><path d="M26 20v4"/><rect x="20" y="26" width="14" height="10" rx="1.5" stroke-dasharray="3 2"/><path d="M20 26l7-5 7 5" stroke-dasharray="3 2"/><circle cx="34" cy="10" r="4" fill="none"/><path d="M32 10l1.5 1.5 3-3" stroke-width="1.5"/></svg>
+          <div class="absolute -top-2 -right-2 w-7 h-7 bg-brand-500 text-white text-xs font-bold rounded-lg flex items-center justify-center shadow">4</div>
+        </div>
+        <h3 class="font-display font-semibold text-base text-slate-900 mb-2">Монтаж за 1 день</h3>
+        <p class="text-slate-500 text-sm max-w-[200px]">Встановлення на ділянці.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ FOOTER ══════ -->
+<footer class="bg-slate-900 text-white pt-20 pb-8">
+  <div class="max-w-7xl mx-auto px-5">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-12 mb-16 reveal">
+      <div>
+        <h3 class="font-display font-semibold text-lg mb-5">Контакти</h3>
+        <a href="tel:+380XXXXXXXXX" class="block text-2xl lg:text-3xl font-display font-bold text-brand-400 hover:text-brand-300 transition mb-3">+380 (XX) XXX-XX-XX</a>
+        <a href="mailto:info@atg-service.com" class="text-slate-400 hover:text-white transition text-sm">info@atg-service.com</a>
+        <p class="text-slate-500 text-sm mt-4 leading-relaxed">м.&nbsp;Київ, вул.&nbsp;Виробнича, 15<br><span class="text-brand-400 font-medium">Приїжджайте на екскурсію!</span></p>
+      </div>
+      <div>
+        <h3 class="font-display font-semibold text-lg mb-5">Пишіть зручно</h3>
+        <div class="flex flex-col gap-3">
+          <a href="viber://chat?number=%2B380XXXXXXXXX" class="viber-bg hover:brightness-110 text-white font-semibold py-3.5 px-6 rounded-full text-center transition flex items-center justify-center gap-2 text-sm shadow-lg shadow-[#7360f2]/20">Viber — основний</a>
+          <a href="https://t.me/" class="bg-[#2AABEE] hover:brightness-110 text-white font-semibold py-3.5 px-6 rounded-full text-center transition text-sm">Telegram</a>
+          <a href="https://wa.me/" class="bg-[#25D366] hover:brightness-110 text-white font-semibold py-3.5 px-6 rounded-full text-center transition text-sm">WhatsApp</a>
+        </div>
+      </div>
+      <div class="flex flex-col justify-center items-center text-center bg-slate-800/50 rounded-3xl p-8 border border-slate-700/40">
+        <h3 class="font-display font-semibold text-lg mb-2">Ще не вирішили?</h3>
+        <p class="text-slate-400 text-sm mb-6">Безкоштовний розрахунок вартості.</p>
+        <button onclick="scrollToQuiz()" class="w-full cta-primary text-white font-semibold py-3.5 rounded-full">Дізнатись вартість</button>
+      </div>
+    </div>
+    <div class="border-t border-slate-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-slate-500 text-xs">
+      <span>&copy; 2024 АТГ СЕРВІС БУД</span>
+      <span class="font-mono text-[10px] text-slate-600">Модульні будинки нового покоління</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════ LIGHTBOX ══════ -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLB()"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+  <button class="lb-nav lb-prev" onclick="navLB(-1)"><svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg></button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-nav lb-next" onclick="navLB(1)"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="lb-counter" id="lb-counter"></div>
+</div>
+
+<!-- ══════ JS ══════ -->
+<script>
+(function(){
+'use strict';
+
+/* ═══ CARD SLIDER + LIGHTBOX ═══ */
+var sliderState={};
+document.querySelectorAll('.card-slider').forEach(function(sl){
+  var key=sl.dataset.slider;
+  sliderState[key]={current:0,total:sl.querySelectorAll('.slides img').length};
+});
+
+window.slideCard=function(key,dir){
+  var st=sliderState[key];if(!st)return;
+  st.current=(st.current+dir+st.total)%st.total;
+  updateSlider(key);
+};
+window.goSlide=function(key,idx){
+  var st=sliderState[key];if(!st)return;
+  st.current=idx;
+  updateSlider(key);
+};
+function updateSlider(key){
+  var st=sliderState[key];
+  var sl=document.querySelector('[data-slider="'+key+'"]');
+  if(!sl)return;
+  sl.querySelector('.slides').style.transform='translateX(-'+(st.current*100)+'%)';
+  var dots=sl.querySelectorAll('[data-dots="'+key+'"] span');
+  dots.forEach(function(d,i){d.classList.toggle('active',i===st.current);});
+}
+
+/* Touch swipe support */
+document.querySelectorAll('.card-slider').forEach(function(sl){
+  var key=sl.dataset.slider,sx=0;
+  sl.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+  sl.addEventListener('touchend',function(e){
+    var dx=e.changedTouches[0].clientX-sx;
+    if(Math.abs(dx)>40){slideCard(key,dx<0?1:-1);}
+  },{passive:true});
+});
+
+/* Lightbox */
+var lbImages=[],lbIdx=0,lb=document.getElementById('lightbox'),lbImg=document.getElementById('lb-img'),lbCtr=document.getElementById('lb-counter');
+
+document.querySelectorAll('.card-slider .slides img').forEach(function(img){
+  img.addEventListener('click',function(){
+    var slider=img.closest('.card-slider');
+    var imgs=slider.querySelectorAll('.slides img');
+    lbImages=[];imgs.forEach(function(i){lbImages.push(i.src);});
+    lbIdx=Array.prototype.indexOf.call(imgs,img);
+    showLB();
+  });
+});
+
+function showLB(){
+  lbImg.src=lbImages[lbIdx];
+  lbCtr.textContent=(lbIdx+1)+' / '+lbImages.length;
+  lb.classList.add('show');
+  document.body.style.overflow='hidden';
+}
+window.closeLB=function(){lb.classList.remove('show');document.body.style.overflow='';};
+window.navLB=function(d){lbIdx=(lbIdx+d+lbImages.length)%lbImages.length;lbImg.src=lbImages[lbIdx];lbCtr.textContent=(lbIdx+1)+' / '+lbImages.length;};
+
+lb.addEventListener('click',function(e){if(e.target===lb)closeLB();});
+document.addEventListener('keydown',function(e){
+  if(!lb.classList.contains('show'))return;
+  if(e.key==='Escape')closeLB();
+  if(e.key==='ArrowLeft')navLB(-1);
+  if(e.key==='ArrowRight')navLB(1);
+});
+
+/* Header — transparent/white on hero → solid white on scroll */
+var hdr=document.getElementById('hdr');
+var logoT=document.getElementById('logo-text');
+var logoS=document.getElementById('logo-sub');
+var logoImg=document.getElementById('logo-img');
+var socIcons=document.getElementById('social-icons');
+var burgerB=document.getElementById('burger-btn');
+var scrolled=false;
+window.addEventListener('scroll',function(){
+  var past=window.scrollY>80;
+  if(past===scrolled)return;
+  scrolled=past;
+  if(past){
+    hdr.style.background='rgba(255,255,255,.92)';
+    hdr.style.backdropFilter='blur(16px)';
+    hdr.style.boxShadow='0 1px 30px rgba(0,0,0,.06)';
+    logoT.className=logoT.className.replace('text-white','text-slate-800');
+    logoS.className=logoS.className.replace('text-white/50','text-slate-400');
+    if(logoImg)logoImg.style.filter='drop-shadow(0 2px 6px rgba(0,0,0,0.1))';
+    if(burgerB)burgerB.className=burgerB.className.replace('text-white','text-slate-700').replace('hover:bg-white/10','hover:bg-slate-100');
+    socIcons.querySelectorAll('a').forEach(function(a){
+      a.className=a.className.replace('bg-white/10','bg-slate-100').replace('text-white/70','text-slate-500');
+    });
+  }else{
+    hdr.style.background='transparent';
+    hdr.style.backdropFilter='none';
+    hdr.style.boxShadow='none';
+    logoT.className=logoT.className.replace('text-slate-800','text-white');
+    logoS.className=logoS.className.replace('text-slate-400','text-white/50');
+    if(logoImg)logoImg.style.filter='drop-shadow(0 2px 8px rgba(0,0,0,0.3))';
+    if(burgerB)burgerB.className=burgerB.className.replace('text-slate-700','text-white').replace('hover:bg-slate-100','hover:bg-white/10');
+    socIcons.querySelectorAll('a').forEach(function(a){
+      a.className=a.className.replace('bg-slate-100','bg-white/10').replace('text-slate-500','text-white/70');
+    });
+  }
+},{passive:true});
+
+window.toggleMob=function(){document.getElementById('mob').classList.toggle('closed');};
+window.scrollToQuiz=function(){document.getElementById('quiz').scrollIntoView({behavior:'smooth',block:'start'});};
+
+/* Reveal */
+var ro=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting){en.target.classList.add('vis');ro.unobserve(en.target);}});},{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach(function(el){ro.observe(el);});
+
+/* Plan image lightbox */
+document.querySelectorAll('.plan-img').forEach(function(img){
+  img.addEventListener('click',function(){
+    lbImages=[img.src];
+    lbIdx=0;
+    showLB();
+  });
+});
+
+/* ═══ HERO IMAGE ANIMATIONS ═══ */
+(function(){
+  /* Sparkle particles generation */
+  var sparklesEl=document.getElementById('hero-sparkles');
+  if(sparklesEl){
+    for(var i=0;i<35;i++){
+      var s=document.createElement('div');
+      s.className='sparkle';
+      s.style.left=Math.random()*100+'%';
+      s.style.top=40+Math.random()*55+'%';
+      s.style.setProperty('--dur',(4+Math.random()*6)+'s');
+      s.style.setProperty('--delay',(Math.random()*8)+'s');
+      s.style.width=s.style.height=(1.5+Math.random()*2.5)+'px';
+      s.style.background=Math.random()>.5?'rgba(255,200,120,.8)':'rgba(255,255,255,.6)';
+      sparklesEl.appendChild(s);
+    }
+  }
+
+  /* Mouse parallax on hero image */
+  var heroP=document.getElementById('hero-parallax');
+  var mx=0,my=0,cx=0,cy=0;
+  document.addEventListener('mousemove',function(e){
+    mx=(e.clientX/window.innerWidth-.5)*2;
+    my=(e.clientY/window.innerHeight-.5)*2;
+  });
+  /* Touch support */
+  document.addEventListener('touchmove',function(e){
+    if(e.touches[0]){
+      mx=(e.touches[0].clientX/window.innerWidth-.5)*2;
+      my=(e.touches[0].clientY/window.innerHeight-.5)*2;
+    }
+  },{passive:true});
+
+  function animParallax(){
+    requestAnimationFrame(animParallax);
+    cx+=(mx-cx)*.03;
+    cy+=(my-cy)*.03;
+    if(heroP){
+      heroP.style.transform='translate('+(-cx*15)+'px,'+(-cy*10)+'px)';
+    }
+  }
+  animParallax();
+
+  /* Scroll parallax — image moves slower than content */
+  window.addEventListener('scroll',function(){
+    if(heroP){
+      var sy=window.scrollY;
+      if(sy<window.innerHeight*1.2){
+        heroP.style.transform='translate('+(-cx*15)+'px,'+(sy*.15-cy*10)+'px)';
+      }
+    }
+  },{passive:true});
+})();
+
+/* ═══ AI TYPING ═══ */
+(function(){
+  var msgs=['Аналізую параметри вашого проекту...','Модуль 45м² з терасою — від $18,000','Додаю панорамні вікна + утеплення 150мм','Розрахунок готовий за 2 хвилини ⚡','Формую конфігурацію для Viber...'];
+  var el=document.getElementById('ai-text'),mi=0,ci=0;
+  function t(){if(!el)return;if(ci<=msgs[mi].length){el.innerHTML=msgs[mi].substring(0,ci)+'<span class="cblink"></span>';ci++;setTimeout(t,35+Math.random()*25);}else{setTimeout(function(){ci=0;mi=(mi+1)%msgs.length;el.innerHTML='<span class="cblink"></span>';setTimeout(t,400);},2500);}}
+  setTimeout(t,1500);
+})();
+
+/* ═══ QUIZ ═══ */
+var VN='+380XXXXXXXXX';
+var qs=[
+  {q:'Для чого потрібен будинок?',t:'r',o:[{l:'Постійне проживання',i:'🏠'},{l:'Дача',i:'🌿'},{l:'Під здачу',i:'💰'},{l:'Баня / Сауна',i:'♨️'}]},
+  {q:'Яка площа вас цікавить?',t:'r',o:[{l:'До 30 м²',i:'📐'},{l:'30–50 м²',i:'📏'},{l:'Від 50 м²',i:'🏗️'},{l:'Потрібна порада',i:'💡'}]},
+  {q:'Додаткові опції:',t:'c',o:[{l:'Тераса',i:'🪵'},{l:'Панорамні вікна',i:'🪟'},{l:'Піч-камін',i:'🔥'}]},
+  {q:'Чи є ділянка?',t:'r',o:[{l:'Так',i:'✅'},{l:'Шукаю',i:'🔍'},{l:'Планую купити',i:'📋'}]},
+  {q:'Ваш номер телефону',t:'p'}
+];
+var ci=0,an={},qc=document.getElementById('qc');
+
+function rQ(i){
+  var s=qs[i],pct=((i+1)/qs.length*100);
+  document.getElementById('ql').textContent='Крок '+(i+1)+' з '+qs.length;
+  document.getElementById('qp').textContent=Math.round(pct)+'%';
+  document.getElementById('qb').style.width=pct+'%';
+  var h='<h3 class="font-display font-semibold text-lg sm:text-xl text-white mb-6">'+s.q+'</h3>';
+  if(s.t==='r'){h+='<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">';s.o.forEach(function(o){var sel=an[i]===o.l;h+='<button onclick="qS('+i+",'"+o.l.replace(/'/g,"\\'")+"')\" class=\"flex items-center gap-3 p-4 rounded-xl border text-left transition-all "+(sel?'border-brand-500 bg-brand-500/10 text-white ring-1 ring-brand-500/30':'border-slate-600 bg-slate-700/30 text-slate-300 hover:border-slate-400 hover:bg-slate-700/50')+"\"><span class=\"text-xl\">"+o.i+'</span><span class="font-medium text-sm">'+o.l+'</span></button>';});h+='</div>';}
+  else if(s.t==='c'){var ck=an[i]||[];h+='<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">';s.o.forEach(function(o){var on=ck.indexOf(o.l)!==-1;h+='<button onclick="qT('+i+",'"+o.l.replace(/'/g,"\\'")+"')\" class=\"flex items-center gap-3 p-4 rounded-xl border text-left transition-all "+(on?'border-brand-500 bg-brand-500/10 text-white ring-1 ring-brand-500/30':'border-slate-600 bg-slate-700/30 text-slate-300 hover:border-slate-400')+"\"><span class=\"text-xl\">"+o.i+'</span><span class="font-medium text-sm">'+o.l+'</span>'+(on?'<svg class="w-5 h-5 text-brand-400 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>':'')+'</button>';});h+='</div>';}
+  else{h+='<p class="text-slate-400 text-sm mb-5">Надішлемо кошторис у Viber за 15 хв.</p><input id="ph" type="tel" placeholder="+380 (__) ___-__-__" value="'+(an[i]||'')+'" class="w-full bg-slate-700/40 border border-slate-600 focus:border-brand-500 focus:ring-1 focus:ring-brand-500/40 text-white placeholder-slate-500 rounded-xl px-5 py-4 text-base outline-none transition mb-2"><p id="pe" class="text-red-400 text-xs hidden">Введіть коректний номер</p>';}
+  h+='<div class="flex justify-between mt-8 gap-4">';
+  if(i>0)h+='<button onclick="qP()" class="text-slate-400 hover:text-white text-sm font-medium transition flex items-center gap-1"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>Назад</button>';else h+='<span></span>';
+  if(s.t==='p')h+='<button onclick="qSub()" class="viber-bg hover:brightness-110 text-white font-semibold py-3 px-7 rounded-full transition flex items-center gap-2 text-sm shadow-lg shadow-[#7360f2]/25">Отримати у Viber</button>';
+  else if(s.t==='c')h+='<button onclick="qN()" class="cta-primary text-white font-semibold py-3 px-7 rounded-full text-sm">Далі →</button>';
+  h+='</div>';qc.innerHTML=h;
+}
+window.qS=function(si,v){an[si]=v;rQ(si);setTimeout(function(){if(ci<qs.length-1){ci++;rQ(ci);}},300);};
+window.qT=function(si,v){if(!an[si])an[si]=[];var a=an[si],idx=a.indexOf(v);if(idx===-1)a.push(v);else a.splice(idx,1);rQ(si);};
+window.qN=function(){if(ci<qs.length-1){ci++;rQ(ci);}};
+window.qP=function(){if(ci>0){ci--;rQ(ci);}};
+window.qSub=function(){
+  var p=document.getElementById('ph'),phone=p?p.value.trim():'';
+  if(phone.length<10){var e=document.getElementById('pe');e&&e.classList.remove('hidden');p&&(p.style.borderColor='#f87171');return;}
+  an[4]=phone;
+  var t=['🏠 ЗАЯВКА — АТГ СЕРВІС БУД','────────────','📌 '+(an[0]||'-'),'📐 '+(an[1]||'-'),'✨ '+(Array.isArray(an[2])&&an[2].length?an[2].join(', '):'—'),'📍 '+(an[3]||'-'),'📞 '+phone,'────────────','Прошу розрахунок.'].join('\n');
+  var lnk='viber://chat?number='+encodeURIComponent(VN)+'&text='+encodeURIComponent(t);
+  qc.innerHTML='<div class="text-center py-8"><div class="w-20 h-20 mx-auto bg-brand-500/10 rounded-full flex items-center justify-center mb-5"><svg class="w-10 h-10 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M5 13l4 4L19 7"/></svg></div><h3 class="font-display font-semibold text-xl text-white mb-3">Дякуємо!</h3><p class="text-slate-400 text-sm mb-6">Viber відкриється автоматично.</p><a href="'+lnk+'" class="inline-flex items-center gap-2 viber-bg text-white font-semibold py-3.5 px-8 rounded-full transition text-sm">Відкрити Viber</a></div>';
+  setTimeout(function(){window.location.href=lnk;},600);
+};
+rQ(0);
+
+})();
+</script>
+</body>
+</html>
