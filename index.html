@@ -160,6 +160,7 @@
     /* Navy big stat card */
     .bc-navy{background:#1a1e2e;color:#fff;grid-row:span 2}
     .bc-navy .bc-stat{font-family:'Outfit',sans-serif;font-size:72px;font-weight:900;line-height:1;letter-spacing:-3px;background:linear-gradient(135deg,#ff8c1a,#ffb347);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    @media(min-width:1024px){.bc-navy .bc-stat{font-size:96px;letter-spacing:-4px}}
     .bc-navy .bc-unit{font-size:22px;font-weight:700;color:rgba(255,255,255,.5);margin-left:4px;vertical-align:top;margin-top:12px;display:inline-block;-webkit-text-fill-color:rgba(255,255,255,.5)}
     .bc-navy::after{content:'';position:absolute;bottom:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(255,140,26,.15) 0%,transparent 70%)}
     /* Orange accent card */
@@ -455,9 +456,20 @@
             </div>
             <span style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4)">АТГ Сервіс Буд</span>
           </div>
-          <div class="bc-stat">10<span class="bc-unit">+</span></div>
+          <div class="bc-stat">14<span class="bc-unit">+</span></div>
           <div style="font-size:20px;font-weight:800;color:#fff;margin-top:4px;font-family:'Outfit',sans-serif">років досвіду</div>
           <div style="font-size:13px;color:rgba(255,255,255,.4);margin-top:8px;line-height:1.5">Успішних проектів від Карпат до Полісся. Кожен будинок — з гарантією.</div>
+          <div style="margin-top:20px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.5)">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#ff8c1a" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Офіційна гарантія на конструкцію
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.5)">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#ff8c1a" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Виробництво та монтаж під ключ
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.5)">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#ff8c1a" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Доставка по всій Україні
+            </div>
+          </div>
         </div>
         <div style="display:flex;gap:16px;margin-top:24px">
           <div style="text-align:center">
