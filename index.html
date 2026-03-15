@@ -190,6 +190,32 @@
     .bc-wide-inner{display:flex;align-items:center;gap:24px}
     .bc-wide-inner .bc-icon{margin-bottom:0;flex-shrink:0}
     @media(max-width:639px){.bc-wide-inner{flex-direction:column;align-items:flex-start;gap:12px}}
+
+    /* ── Quiz calculator ── */
+    .qz-range{-webkit-appearance:none;width:100%;height:8px;border-radius:4px;background:#e2e8f0;outline:none;cursor:pointer;transition:background .3s}
+    .qz-range::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#ff8c1a,#ff6b00);border:4px solid #fff;box-shadow:0 2px 8px rgba(255,140,26,.35);cursor:pointer;transition:transform .2s}
+    .qz-range::-webkit-slider-thumb:hover{transform:scale(1.15)}
+    .qz-range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#ff8c1a,#ff6b00);border:4px solid #fff;box-shadow:0 2px 8px rgba(255,140,26,.35);cursor:pointer}
+    .qz-opt{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:14px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;transition:all .2s;font-size:14px;font-weight:500;color:#334155}
+    .qz-opt:hover{border-color:#cbd5e1;background:#f8fafc}
+    .qz-opt.sel{border-color:#ff8c1a;background:#fff8f0;color:#1a1e2e;box-shadow:0 0 0 3px rgba(255,140,26,.1)}
+    .qz-opt .qz-radio{width:20px;height:20px;border-radius:50%;border:2px solid #cbd5e1;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+    .qz-opt.sel .qz-radio{border-color:#ff8c1a;background:#ff8c1a}
+    .qz-opt.sel .qz-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:#fff}
+    .qz-opt .qz-check{width:20px;height:20px;border-radius:6px;border:2px solid #cbd5e1;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+    .qz-opt.sel .qz-check{border-color:#ff8c1a;background:#ff8c1a}
+    .qz-opt.sel .qz-check svg{display:block}
+    .qz-opt .qz-check svg{display:none;width:12px;height:12px;stroke:#fff;stroke-width:3;fill:none}
+    .qz-wish{width:100%;border:1.5px solid #e2e8f0;border-radius:12px;padding:12px 16px;font-size:13px;color:#334155;outline:none;resize:none;transition:border-color .2s;background:#f8fafc;font-family:'DM Sans',sans-serif}
+    .qz-wish:focus{border-color:#ff8c1a;background:#fff}
+    .qz-wish::placeholder{color:#94a3b8}
+    .qz-markers{display:flex;justify-content:space-between;padding:0 2px;margin-top:6px}
+    .qz-markers span{position:relative;font-size:10px;color:#94a3b8;font-weight:600;cursor:pointer;padding:4px 0}
+    .qz-markers span::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:2px;height:6px;background:#cbd5e1;border-radius:1px}
+    .qz-btn-next{background:linear-gradient(135deg,#ff8c1a,#ff6b00);color:#fff;font-weight:700;font-size:14px;padding:14px 28px;border-radius:14px;border:none;cursor:pointer;transition:all .2s;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:8px;box-shadow:0 4px 14px rgba(255,140,26,.25)}
+    .qz-btn-next:hover{box-shadow:0 6px 20px rgba(255,140,26,.35);transform:translateY(-1px)}
+    .qz-btn-back{background:none;border:2px solid #e2e8f0;color:#64748b;font-weight:600;font-size:14px;padding:14px 24px;border-radius:14px;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+    .qz-btn-back:hover{border-color:#cbd5e1;color:#334155}
   </style>
 </head>
 <body>
@@ -582,18 +608,75 @@
 </section>
 
 <!-- ══════ QUIZ ══════ -->
-<section id="quiz" class="py-20 lg:py-28 relative overflow-hidden" style="background:linear-gradient(135deg,#0f172a,#1e293b,#0f172a)">
-  <div class="absolute inset-0 opacity-30" style="background-image:radial-gradient(circle at 20% 30%,rgba(255,140,26,.12) 0%,transparent 50%),radial-gradient(circle at 80% 70%,rgba(99,102,241,.1) 0%,transparent 50%)"></div>
-  <div class="relative z-10 max-w-2xl mx-auto px-5">
-    <div class="text-center mb-10 reveal">
-      <div class="inline-flex items-center gap-2 bg-brand-500/10 text-brand-400 text-xs font-semibold tracking-wider uppercase px-4 py-1.5 rounded-full mb-4 border border-brand-500/20"><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>Безкоштовний розрахунок</div>
-      <h2 class="font-display font-extrabold text-2xl sm:text-3xl lg:text-4xl text-white">Дізнайтесь вартість вашого будинку</h2>
-      <p class="text-slate-400 mt-3 text-sm sm:text-base max-w-md mx-auto">5 питань — і ми надішлемо точний розрахунок у Viber.</p>
+<section id="quiz" class="py-20 lg:py-28 bg-white relative overflow-hidden">
+  <div class="absolute inset-0 opacity-[.03]" style="background-image:radial-gradient(circle at 1px 1px,#1a1e2e 1px,transparent 0);background-size:32px 32px"></div>
+  <div class="relative z-10 max-w-6xl mx-auto px-5">
+    <div class="text-center mb-12 reveal">
+      <div class="inline-flex items-center gap-2 bg-brand-50 text-brand-600 text-xs font-semibold tracking-wider uppercase px-4 py-1.5 rounded-full mb-4 border border-brand-200">
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+        Безкоштовний розрахунок
+      </div>
+      <h2 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-[2.8rem] text-slate-900">Розрахуйте вартість вашого будинку</h2>
+      <p class="text-slate-500 mt-3 max-w-lg mx-auto">Оберіть параметри — і ми покажемо орієнтовну вартість та підберемо варіант</p>
     </div>
-    <div class="bg-slate-800/60 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-700/40 shadow-2xl reveal">
-      <div class="mb-8"><div class="flex justify-between text-xs font-medium mb-2"><span id="ql" class="text-slate-400">Крок 1 з 5</span><span id="qp" class="text-brand-400">20%</span></div><div class="h-1.5 bg-slate-700 rounded-full overflow-hidden"><div id="qb" class="quiz-bar h-full rounded-full" style="width:20%;background:linear-gradient(90deg,#ff8c1a,#ff6b00)"></div></div></div>
-      <div id="qc"></div>
+
+    <div class="grid lg:grid-cols-2 gap-8 reveal">
+      <!-- LEFT — Calculator -->
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/40 p-6 sm:p-8">
+        <!-- Progress -->
+        <div class="mb-8">
+          <div class="flex justify-between text-xs font-medium mb-2">
+            <span id="ql" class="text-slate-500">Крок 1 з 5</span>
+            <span id="qp" class="text-brand-500 font-bold">20%</span>
+          </div>
+          <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+            <div id="qb" class="h-full rounded-full transition-all duration-500" style="width:20%;background:linear-gradient(90deg,#ff8c1a,#ff6b00)"></div>
+          </div>
+        </div>
+        <!-- Quiz content -->
+        <div id="qc"></div>
+      </div>
+
+      <!-- RIGHT — House preview -->
+      <div class="bg-slate-50 rounded-3xl border border-slate-200 overflow-hidden flex flex-col">
+        <div class="relative flex-1 min-h-[280px] lg:min-h-0">
+          <img id="qz-img" src="images/1-1.png" alt="Модульний будинок" class="absolute inset-0 w-full h-full object-cover transition-all duration-700">
+          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-6">
+            <div class="flex items-center gap-3">
+              <span id="qz-badge" class="bg-brand-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg">Стандарт</span>
+              <span id="qz-area-badge" class="bg-white/20 backdrop-blur text-white text-xs font-semibold px-3 py-1.5 rounded-lg">24 м²</span>
+            </div>
+          </div>
+        </div>
+        <!-- Estimation panel -->
+        <div class="p-6 bg-white border-t border-slate-100">
+          <div class="text-xs text-slate-400 font-medium uppercase tracking-wider mb-3">Орієнтовний розрахунок</div>
+          <div class="grid grid-cols-3 gap-4 mb-4">
+            <div>
+              <div class="font-mono text-xs text-slate-400">Площа</div>
+              <div id="qz-area" class="font-display font-bold text-lg text-slate-900">24 м²</div>
+            </div>
+            <div>
+              <div class="font-mono text-xs text-slate-400">Ціна / м²</div>
+              <div id="qz-price" class="font-display font-bold text-lg text-brand-500">від 197$</div>
+            </div>
+            <div>
+              <div class="font-mono text-xs text-slate-400">Разом ≈</div>
+              <div id="qz-total" class="font-display font-bold text-lg text-slate-900">$4 728</div>
+            </div>
+          </div>
+          <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+            <div id="qz-fill" class="h-full rounded-full transition-all duration-700" style="width:15%;background:linear-gradient(90deg,#22c55e,#16a34a)"></div>
+          </div>
+          <div class="flex justify-between text-[10px] text-slate-400 mt-1 font-mono">
+            <span>$4 000</span>
+            <span id="qz-fill-label" class="text-green-600 font-bold">Бюджетний варіант</span>
+            <span>$60 000+</span>
+          </div>
+        </div>
+      </div>
     </div>
+
   </div>
 </section>
 
@@ -868,43 +951,199 @@ document.querySelectorAll('.plan-img').forEach(function(img){
   setTimeout(t,1500);
 })();
 
-/* ═══ QUIZ ═══ */
+/* ═══ QUIZ CALCULATOR ═══ */
 var VN='+380XXXXXXXXX';
-var qs=[
-  {q:'Для чого потрібен будинок?',t:'r',o:[{l:'Постійне проживання',i:'🏠'},{l:'Дача',i:'🌿'},{l:'Під здачу',i:'💰'},{l:'Баня / Сауна',i:'♨️'}]},
-  {q:'Яка площа вас цікавить?',t:'r',o:[{l:'До 30 м²',i:'📐'},{l:'30–50 м²',i:'📏'},{l:'Від 50 м²',i:'🏗️'},{l:'Потрібна порада',i:'💡'}]},
-  {q:'Додаткові опції:',t:'c',o:[{l:'Тераса',i:'🪵'},{l:'Панорамні вікна',i:'🪟'},{l:'Піч-камін',i:'🔥'}]},
-  {q:'Чи є ділянка?',t:'r',o:[{l:'Так',i:'✅'},{l:'Шукаю',i:'🔍'},{l:'Планую купити',i:'📋'}]},
-  {q:'Ваш номер телефону',t:'p'}
+var ci=0,an={area:30},qc=document.getElementById('qc');
+
+/* House variants */
+var variants=[
+  {name:'Стандарт',img:'images/1-1.png',minArea:20,maxArea:35,price:197,color:'#22c55e',label:'Бюджетний варіант'},
+  {name:'Комфорт',img:'images/2-1.jpg',minArea:36,maxArea:65,price:397,color:'#ff8c1a',label:'Оптимальний вибір'},
+  {name:'Преміум',img:'images/3-1.jpg',minArea:66,maxArea:120,price:597,color:'#6366f1',label:'Преміум-клас'}
 ];
-var ci=0,an={},qc=document.getElementById('qc');
+
+function getVariant(area){
+  if(area<=35)return variants[0];
+  if(area<=65)return variants[1];
+  return variants[2];
+}
+
+function updPreview(){
+  var area=an.area||30;
+  var v=getVariant(area);
+  var total=area*v.price;
+  var pct=Math.min(100,Math.max(5,(total/60000)*100));
+  document.getElementById('qz-img').src=v.img;
+  document.getElementById('qz-badge').textContent=v.name;
+  document.getElementById('qz-badge').style.background=v.color;
+  document.getElementById('qz-area-badge').textContent=area+' м²';
+  document.getElementById('qz-area').textContent=area+' м²';
+  document.getElementById('qz-price').textContent='від '+v.price+'$';
+  document.getElementById('qz-total').textContent='$'+total.toLocaleString('uk');
+  document.getElementById('qz-fill').style.width=pct+'%';
+  document.getElementById('qz-fill').style.background='linear-gradient(90deg,'+v.color+','+v.color+'cc)';
+  document.getElementById('qz-fill-label').textContent=v.label;
+  document.getElementById('qz-fill-label').style.color=v.color;
+}
+
+/* Quiz steps */
+var qs=[
+  {q:'Для чого потрібен будинок?',hint:'Оберіть основне призначення',t:'r',
+   o:['Постійне проживання','Дачний будинок','Під здачу / бізнес','Баня / Сауна'],
+   ic:['🏠','🌿','💰','♨️'],wish:'Є побажання щодо призначення?'},
+  {q:'Яка площа вам потрібна?',hint:'Рухайте повзунок для вибору площі',t:'s',wish:'Додаткові побажання щодо розмірів?'},
+  {q:'Додаткові опції',hint:'Оберіть все, що хочете',t:'c',
+   o:['Тераса','Панорамні вікна','Піч-камін','Друге світло','Санвузол','Кухня-студія'],
+   ic:['🪵','🪟','🔥','☀️','🚿','🍳'],wish:'Інші побажання по комплектації?'},
+  {q:'Чи є ділянка під забудову?',hint:'Це допоможе розрахувати доставку',t:'r',
+   o:['Так, є ділянка','Шукаю ділянку','Планую купити','Потрібна консультація'],
+   ic:['✅','🔍','📋','💡'],wish:'Де знаходиться ділянка (місто, область)?'},
+  {q:'Залиште контакт для розрахунку',hint:'Надішлемо детальний кошторис у Viber',t:'p'}
+];
 
 function rQ(i){
   var s=qs[i],pct=((i+1)/qs.length*100);
   document.getElementById('ql').textContent='Крок '+(i+1)+' з '+qs.length;
   document.getElementById('qp').textContent=Math.round(pct)+'%';
   document.getElementById('qb').style.width=pct+'%';
-  var h='<h3 class="font-display font-semibold text-lg sm:text-xl text-white mb-6">'+s.q+'</h3>';
-  if(s.t==='r'){h+='<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">';s.o.forEach(function(o){var sel=an[i]===o.l;h+='<button onclick="qS('+i+",'"+o.l.replace(/'/g,"\\'")+"')\" class=\"flex items-center gap-3 p-4 rounded-xl border text-left transition-all "+(sel?'border-brand-500 bg-brand-500/10 text-white ring-1 ring-brand-500/30':'border-slate-600 bg-slate-700/30 text-slate-300 hover:border-slate-400 hover:bg-slate-700/50')+"\"><span class=\"text-xl\">"+o.i+'</span><span class="font-medium text-sm">'+o.l+'</span></button>';});h+='</div>';}
-  else if(s.t==='c'){var ck=an[i]||[];h+='<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">';s.o.forEach(function(o){var on=ck.indexOf(o.l)!==-1;h+='<button onclick="qT('+i+",'"+o.l.replace(/'/g,"\\'")+"')\" class=\"flex items-center gap-3 p-4 rounded-xl border text-left transition-all "+(on?'border-brand-500 bg-brand-500/10 text-white ring-1 ring-brand-500/30':'border-slate-600 bg-slate-700/30 text-slate-300 hover:border-slate-400')+"\"><span class=\"text-xl\">"+o.i+'</span><span class="font-medium text-sm">'+o.l+'</span>'+(on?'<svg class="w-5 h-5 text-brand-400 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>':'')+'</button>';});h+='</div>';}
-  else{h+='<p class="text-slate-400 text-sm mb-5">Надішлемо кошторис у Viber за 15 хв.</p><input id="ph" type="tel" placeholder="+380 (__) ___-__-__" value="'+(an[i]||'')+'" class="w-full bg-slate-700/40 border border-slate-600 focus:border-brand-500 focus:ring-1 focus:ring-brand-500/40 text-white placeholder-slate-500 rounded-xl px-5 py-4 text-base outline-none transition mb-2"><p id="pe" class="text-red-400 text-xs hidden">Введіть коректний номер</p>';}
-  h+='<div class="flex justify-between mt-8 gap-4">';
-  if(i>0)h+='<button onclick="qP()" class="text-slate-400 hover:text-white text-sm font-medium transition flex items-center gap-1"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>Назад</button>';else h+='<span></span>';
-  if(s.t==='p')h+='<button onclick="qSub()" class="viber-bg hover:brightness-110 text-white font-semibold py-3 px-7 rounded-full transition flex items-center gap-2 text-sm shadow-lg shadow-[#7360f2]/25">Отримати у Viber</button>';
-  else if(s.t==='c')h+='<button onclick="qN()" class="cta-primary text-white font-semibold py-3 px-7 rounded-full text-sm">Далі →</button>';
-  h+='</div>';qc.innerHTML=h;
+
+  var h='<div style="margin-bottom:6px"><h3 class="font-display font-bold text-xl text-slate-900" style="margin-bottom:4px">'+s.q+'</h3><p style="font-size:13px;color:#94a3b8">'+s.hint+'</p></div>';
+
+  if(s.t==='r'){
+    h+='<div style="display:grid;gap:8px;margin-top:16px">';
+    s.o.forEach(function(o,oi){
+      var sel=an[i]===o;
+      h+='<div onclick="qS('+i+','+oi+')" class="qz-opt'+(sel?' sel':'')+'"><span class="qz-radio"></span><span style="font-size:18px">'+s.ic[oi]+'</span><span>'+o+'</span></div>';
+    });
+    h+='</div>';
+    if(s.wish){h+='<div style="margin-top:16px"><label style="font-size:11px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px">Побажання</label><textarea class="qz-wish" rows="2" placeholder="'+s.wish+'" oninput="an[\'w'+i+'\']=this.value">'+(an['w'+i]||'')+'</textarea></div>';}
+  }
+  else if(s.t==='s'){
+    var area=an.area||30;
+    h+='<div style="margin-top:20px">';
+    h+='<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><span style="font-size:13px;color:#64748b;font-weight:600">Площа будинку</span><span style="font-family:Outfit,sans-serif;font-size:32px;font-weight:900;color:#1a1e2e" id="area-val">'+area+' <span style="font-size:16px;color:#94a3b8">м²</span></span></div>';
+    h+='<input type="range" class="qz-range" id="area-range" min="20" max="120" step="1" value="'+area+'" oninput="qArea(this.value)">';
+    h+='<div class="qz-markers"><span onclick="qSetArea(24)">24</span><span onclick="qSetArea(35)">35</span><span onclick="qSetArea(50)">50</span><span onclick="qSetArea(58)">58</span><span onclick="qSetArea(75)">75</span><span onclick="qSetArea(90)">90</span><span onclick="qSetArea(120)">120</span></div>';
+    h+='</div>';
+    /* Rooms slider */
+    var rooms=an.rooms||1;
+    h+='<div style="margin-top:24px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px"><span style="font-size:13px;color:#64748b;font-weight:600">Кількість кімнат</span><span style="font-family:Outfit,sans-serif;font-size:28px;font-weight:900;color:#1a1e2e" id="rooms-val">'+rooms+'</span></div>';
+    h+='<input type="range" class="qz-range" min="1" max="5" step="1" value="'+rooms+'" oninput="qRooms(this.value)">';
+    h+='<div class="qz-markers"><span onclick="qSetRooms(1)">1</span><span onclick="qSetRooms(2)">2</span><span onclick="qSetRooms(3)">3</span><span onclick="qSetRooms(4)">4</span><span onclick="qSetRooms(5)">5</span></div></div>';
+    if(s.wish){h+='<div style="margin-top:20px"><label style="font-size:11px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px">Побажання</label><textarea class="qz-wish" rows="2" placeholder="'+s.wish+'" oninput="an[\'w'+i+'\']=this.value">'+(an['w'+i]||'')+'</textarea></div>';}
+  }
+  else if(s.t==='c'){
+    var ck=an[i]||[];
+    h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px">';
+    s.o.forEach(function(o,oi){
+      var on=ck.indexOf(o)!==-1;
+      h+='<div onclick="qT('+i+','+oi+')" class="qz-opt'+(on?' sel':'')+'"><span class="qz-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></span><span style="font-size:16px">'+s.ic[oi]+'</span><span>'+o+'</span></div>';
+    });
+    h+='</div>';
+    if(s.wish){h+='<div style="margin-top:16px"><label style="font-size:11px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px">Побажання</label><textarea class="qz-wish" rows="2" placeholder="'+s.wish+'" oninput="an[\'w'+i+'\']=this.value">'+(an['w'+i]||'')+'</textarea></div>';}
+  }
+  else if(s.t==='p'){
+    h+='<div style="margin-top:16px">';
+    h+='<label style="font-size:12px;color:#64748b;font-weight:600;display:block;margin-bottom:6px">Номер телефону</label>';
+    h+='<input id="ph" type="tel" placeholder="+380 (XX) XXX-XX-XX" value="'+(an[4]||'')+'" style="width:100%;border:2px solid #e2e8f0;border-radius:14px;padding:16px 18px;font-size:18px;font-weight:600;color:#1a1e2e;outline:none;font-family:JetBrains Mono,monospace;transition:border-color .2s" onfocus="this.style.borderColor=\'#ff8c1a\'" onblur="this.style.borderColor=\'#e2e8f0\'">';
+    h+='<p id="pe" style="color:#ef4444;font-size:12px;display:none;margin-top:6px">Введіть коректний номер телефону</p>';
+    h+='<label style="font-size:12px;color:#64748b;font-weight:600;display:block;margin:20px 0 6px">Ваше ім\'я (необов\'язково)</label>';
+    h+='<input id="pn" type="text" placeholder="Як вас звати?" value="'+(an.name||'')+'" style="width:100%;border:2px solid #e2e8f0;border-radius:14px;padding:14px 18px;font-size:15px;color:#1a1e2e;outline:none;transition:border-color .2s" onfocus="this.style.borderColor=\'#ff8c1a\'" onblur="this.style.borderColor=\'#e2e8f0\'" oninput="an.name=this.value">';
+    h+='<label style="font-size:11px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin:20px 0 6px">Коментар</label>';
+    h+='<textarea class="qz-wish" rows="2" placeholder="Будь-які додаткові побажання..." oninput="an.comment=this.value">'+(an.comment||'')+'</textarea>';
+    h+='</div>';
+  }
+
+  h+='<div style="display:flex;justify-content:space-between;margin-top:24px;gap:12px">';
+  if(i>0)h+='<button onclick="qP()" class="qz-btn-back"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="display:inline;vertical-align:-2px"><path d="M15 19l-7-7 7-7"/></svg> Назад</button>';else h+='<span></span>';
+  if(s.t==='p')h+='<button onclick="qSub()" class="qz-btn-next" style="background:linear-gradient(135deg,#7360f2,#6344e0)"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.27 2 11.5c0 2.59 1.13 4.95 2.97 6.66V22l3.47-1.96c1.2.29 2.36.46 3.56.46 5.52 0 10-4.27 10-9.5S17.52 2 12 2z"/></svg>Отримати у Viber</button>';
+  else h+='<button onclick="qN()" class="qz-btn-next">Далі <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="display:inline;vertical-align:-2px"><path d="M9 5l7 7-7 7"/></svg></button>';
+  h+='</div>';
+
+  qc.innerHTML=h;
+  updPreview();
+  /* Update range track fill */
+  setTimeout(function(){
+    var r=document.getElementById('area-range');
+    if(r)updRangeFill(r);
+  },10);
 }
-window.qS=function(si,v){an[si]=v;rQ(si);setTimeout(function(){if(ci<qs.length-1){ci++;rQ(ci);}},300);};
-window.qT=function(si,v){if(!an[si])an[si]=[];var a=an[si],idx=a.indexOf(v);if(idx===-1)a.push(v);else a.splice(idx,1);rQ(si);};
+
+function updRangeFill(el){
+  var pct=((el.value-el.min)/(el.max-el.min))*100;
+  el.style.background='linear-gradient(to right,#ff8c1a 0%,#ff8c1a '+pct+'%,#e2e8f0 '+pct+'%,#e2e8f0 100%)';
+}
+
+window.qArea=function(v){
+  an.area=parseInt(v);
+  var el=document.getElementById('area-val');
+  if(el)el.innerHTML=v+' <span style="font-size:16px;color:#94a3b8">м²</span>';
+  updPreview();
+  var r=document.getElementById('area-range');
+  if(r)updRangeFill(r);
+};
+window.qSetArea=function(v){
+  an.area=v;
+  var r=document.getElementById('area-range');
+  if(r){r.value=v;updRangeFill(r);}
+  var el=document.getElementById('area-val');
+  if(el)el.innerHTML=v+' <span style="font-size:16px;color:#94a3b8">м²</span>';
+  updPreview();
+};
+window.qRooms=function(v){
+  an.rooms=parseInt(v);
+  var el=document.getElementById('rooms-val');
+  if(el)el.textContent=v;
+};
+window.qSetRooms=function(v){
+  an.rooms=v;
+  var r=document.querySelectorAll('.qz-range')[1];
+  if(r){r.value=v;}
+  var el=document.getElementById('rooms-val');
+  if(el)el.textContent=v;
+};
+
+window.qS=function(si,oi){an[si]=qs[si].o[oi];rQ(si);setTimeout(function(){if(ci<qs.length-1){ci++;rQ(ci);}},350);};
+window.qT=function(si,oi){
+  if(!an[si])an[si]=[];
+  var v=qs[si].o[oi],a=an[si],idx=a.indexOf(v);
+  if(idx===-1)a.push(v);else a.splice(idx,1);
+  rQ(si);
+};
 window.qN=function(){if(ci<qs.length-1){ci++;rQ(ci);}};
 window.qP=function(){if(ci>0){ci--;rQ(ci);}};
 window.qSub=function(){
   var p=document.getElementById('ph'),phone=p?p.value.trim():'';
-  if(phone.length<10){var e=document.getElementById('pe');e&&e.classList.remove('hidden');p&&(p.style.borderColor='#f87171');return;}
+  if(phone.length<10){
+    var e=document.getElementById('pe');
+    if(e)e.style.display='block';
+    if(p)p.style.borderColor='#ef4444';
+    return;
+  }
   an[4]=phone;
-  var t=['🏠 ЗАЯВКА — АТГ СЕРВІС БУД','────────────','📌 '+(an[0]||'-'),'📐 '+(an[1]||'-'),'✨ '+(Array.isArray(an[2])&&an[2].length?an[2].join(', '):'—'),'📍 '+(an[3]||'-'),'📞 '+phone,'────────────','Прошу розрахунок.'].join('\n');
+  var v=getVariant(an.area||30);
+  var total=(an.area||30)*v.price;
+  var t=[
+    '🏠 ЗАЯВКА — АТГ СЕРВІС БУД',
+    '════════════════',
+    '📌 Мета: '+(an[0]||'—'),
+    '📐 Площа: '+(an.area||30)+' м² ('+v.name+')',
+    '🚪 Кімнат: '+(an.rooms||1),
+    '✨ Опції: '+(Array.isArray(an[2])&&an[2].length?an[2].join(', '):'—'),
+    '📍 Ділянка: '+(an[3]||'—'),
+    '💰 Орієнтовно: $'+total.toLocaleString('uk'),
+    an.name?'👤 '+an.name:'',
+    '📞 '+phone,
+    an.comment?'💬 '+an.comment:'',
+    an.w0?'📝 Мета: '+an.w0:'',
+    an.w1?'📝 Розмір: '+an.w1:'',
+    an.w2?'📝 Опції: '+an.w2:'',
+    an.w3?'📝 Ділянка: '+an.w3:'',
+    '════════════════',
+    'Прошу детальний розрахунок.'
+  ].filter(Boolean).join('\n');
   var lnk='viber://chat?number='+encodeURIComponent(VN)+'&text='+encodeURIComponent(t);
-  qc.innerHTML='<div class="text-center py-8"><div class="w-20 h-20 mx-auto bg-brand-500/10 rounded-full flex items-center justify-center mb-5"><svg class="w-10 h-10 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M5 13l4 4L19 7"/></svg></div><h3 class="font-display font-semibold text-xl text-white mb-3">Дякуємо!</h3><p class="text-slate-400 text-sm mb-6">Viber відкриється автоматично.</p><a href="'+lnk+'" class="inline-flex items-center gap-2 viber-bg text-white font-semibold py-3.5 px-8 rounded-full transition text-sm">Відкрити Viber</a></div>';
+  qc.innerHTML='<div style="text-align:center;padding:32px 0"><div style="width:72px;height:72px;border-radius:50%;background:#f0fdf4;display:flex;align-items:center;justify-content:center;margin:0 auto 20px"><svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#22c55e" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></div><h3 class="font-display" style="font-size:22px;font-weight:800;color:#1a1e2e;margin-bottom:8px">Дякуємо!</h3><p style="color:#94a3b8;font-size:14px;margin-bottom:24px">Viber відкриється автоматично</p><a href="'+lnk+'" class="qz-btn-next" style="display:inline-flex;background:linear-gradient(135deg,#7360f2,#6344e0);text-decoration:none">Відкрити Viber</a></div>';
   setTimeout(function(){window.location.href=lnk;},600);
 };
 rQ(0);
