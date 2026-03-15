@@ -71,8 +71,8 @@
     .quiz-bar{transition:width .5s cubic-bezier(.16,1,.3,1)}
     .icon-box{transition:all .35s cubic-bezier(.16,1,.3,1)}
     .icon-box:hover{transform:scale(1.08) rotate(-2deg)}
-    .mob-menu{transition:all .3s cubic-bezier(.16,1,.3,1)}
-    .mob-menu.closed{opacity:0;pointer-events:none;transform:translateY(-10px)}
+    .mob-menu{transition:all .3s cubic-bezier(.16,1,.3,1);max-height:300px;overflow:hidden}
+    .mob-menu.closed{opacity:0;pointer-events:none;transform:translateY(-10px);max-height:0;padding-top:0;padding-bottom:0}
     .viber-bg{background:#7360f2}
     .mesh-bg{background:radial-gradient(ellipse at 20% 50%,rgba(255,140,26,.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(59,130,246,.06) 0%,transparent 50%),radial-gradient(ellipse at 50% 80%,rgba(139,92,246,.05) 0%,transparent 50%),linear-gradient(180deg,#f8fafc,#fff)}
 
@@ -134,18 +134,73 @@
     .hit-label{text-align:center;color:#ff8c1a;font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:0 0 8px;display:flex;align-items:center;justify-content:center;gap:6px}
     .model-card.hit .detail-btn{background:linear-gradient(135deg,#ff8c1a,#f59e0b);border:none;color:#fff;font-weight:700}
     .model-card.hit .detail-btn:hover{background:linear-gradient(135deg,#f59e0b,#ff8c1a);box-shadow:0 4px 16px rgba(255,140,26,.35)}
+
+    /* ── Why section — bento grid ── */
+    .why-section{background:#f4f6f9;position:relative;overflow:hidden}
+    .why-section::before{content:'';position:absolute;top:-120px;right:-80px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(255,140,26,.07) 0%,transparent 70%);pointer-events:none}
+    .bento-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .bento-grid > .bc:nth-child(1){grid-column:1;grid-row:1/3}
+    .bento-grid > .bc:nth-child(2){grid-column:2;grid-row:1}
+    .bento-grid > .bc:nth-child(3){grid-column:3;grid-row:1}
+    .bento-grid > .bc:nth-child(4){grid-column:2;grid-row:2}
+    .bento-grid > .bc:nth-child(5){grid-column:3;grid-row:2}
+    .bento-grid > .bc:nth-child(6){grid-column:1/4;grid-row:3}
+    @media(max-width:767px){
+      .bento-grid{grid-template-columns:1fr 1fr}
+      .bento-grid > .bc:nth-child(1){grid-column:1/3;grid-row:auto}
+      .bento-grid > .bc:nth-child(n){grid-column:auto;grid-row:auto}
+      .bento-grid > .bc:nth-child(6){grid-column:1/3}
+    }
+    @media(max-width:479px){
+      .bento-grid{grid-template-columns:1fr}
+      .bento-grid > .bc:nth-child(n){grid-column:1;grid-row:auto}
+    }
+    .bc{border-radius:20px;padding:28px;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s}
+    .bc:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.1)}
+    /* Navy big stat card */
+    .bc-navy{background:#1a1e2e;color:#fff;grid-row:span 2}
+    .bc-navy .bc-stat{font-family:'Outfit',sans-serif;font-size:72px;font-weight:900;line-height:1;letter-spacing:-3px;background:linear-gradient(135deg,#ff8c1a,#ffb347);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .bc-navy .bc-unit{font-size:22px;font-weight:700;color:rgba(255,255,255,.5);margin-left:4px;vertical-align:top;margin-top:12px;display:inline-block;-webkit-text-fill-color:rgba(255,255,255,.5)}
+    .bc-navy::after{content:'';position:absolute;bottom:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(255,140,26,.15) 0%,transparent 70%)}
+    /* Orange accent card */
+    .bc-orange{background:linear-gradient(135deg,#ff8c1a,#ff6b00);color:#fff}
+    .bc-orange .bc-num{font-family:'Outfit',sans-serif;font-size:48px;font-weight:900;line-height:1;letter-spacing:-2px;color:rgba(255,255,255,.2)}
+    /* White cards */
+    .bc-white{background:#fff;box-shadow:0 2px 16px rgba(0,0,0,.05)}
+    /* Wide bottom card */
+    .bc-wide{grid-column:span 2}
+    @media(max-width:767px){.bc-wide{grid-column:span 2}.bc-navy{grid-row:span 1}}
+    @media(max-width:479px){.bc-wide{grid-column:span 1}.bc-navy{grid-row:span 1}}
+    /* Icon ring */
+    .bc-icon{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;flex-shrink:0}
+    .bc-icon svg{width:26px;height:26px}
+    .bc-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;opacity:.5}
+    .bc-title{font-family:'Outfit',sans-serif;font-size:17px;font-weight:800;line-height:1.25;color:#1a1e2e}
+    .bc-navy .bc-title,.bc-orange .bc-title{color:#fff}
+    .bc-desc{font-size:13px;color:#64748b;margin-top:6px;line-height:1.5}
+    .bc-navy .bc-desc{color:rgba(255,255,255,.45)}
+    .bc-orange .bc-desc{color:rgba(255,255,255,.75)}
+    .bc-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(255,140,26,.1);color:#ff8c1a;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;margin-top:10px}
+    .bc-white .bc-tag{background:rgba(26,30,46,.07);color:#1a1e2e}
+    /* Decorative dots */
+    .bc-dots{position:absolute;top:16px;right:16px;display:flex;gap:5px}
+    .bc-dots span{width:7px;height:7px;border-radius:50%}
+    /* Wide bottom card flex */
+    .bc-wide-inner{display:flex;align-items:center;gap:24px}
+    .bc-wide-inner .bc-icon{margin-bottom:0;flex-shrink:0}
+    @media(max-width:639px){.bc-wide-inner{flex-direction:column;align-items:flex-start;gap:12px}}
   </style>
 </head>
 <body>
 
 <!-- ══════ HEADER ══════ -->
 <header id="hdr" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background:transparent">
-  <div class="max-w-7xl mx-auto flex items-center justify-between px-5 py-4 lg:py-5">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-2 sm:py-3 lg:py-4">
     <a href="#" class="flex items-center gap-2.5 group">
-      <img id="logo-img" src="images/logo.png" alt="АТГ Сервіс Буд" class="h-10 sm:h-12 w-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)] transition-all duration-500">
-      <div class="hidden sm:block">
+      <img id="logo-img" src="images/logo.png" alt="АТГ Сервіс Буд" class="h-8 sm:h-10 lg:h-12 w-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)] transition-all duration-500">
+      <div class="block">
         <span id="logo-text" class="font-display font-bold text-white text-sm tracking-tight leading-none block transition-colors duration-500">АТГ СЕРВІС БУД</span>
-        <span id="logo-sub" class="text-[10px] text-white/50 font-medium tracking-wider uppercase transition-colors duration-500">Modular Homes</span>
+        <span id="logo-sub" class="text-[10px] text-white/50 font-medium tracking-wider uppercase transition-colors duration-500 -mt-0.5 block">Modular Homes</span>
       </div>
     </a>
     <div class="hidden md:flex items-center gap-4">
@@ -377,42 +432,139 @@
   </div>
 </section>
 
-<!-- ══════ WHY MODULAR ══════ -->
-<section id="why" class="py-20 lg:py-28 bg-white">
+<!-- ══════ WHY MODULAR — BENTO GRID ══════ -->
+<section id="why" class="why-section py-20 lg:py-28">
   <div class="max-w-7xl mx-auto px-5">
-    <div class="text-center mb-14 reveal">
-      <div class="inline-flex items-center gap-2 bg-brand-50 text-brand-600 text-xs font-semibold tracking-wider uppercase px-4 py-1.5 rounded-full mb-4"><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Переваги</div>
+
+    <div class="text-center mb-12 reveal">
+      <div class="inline-flex items-center gap-2 bg-brand-500/10 text-brand-600 text-xs font-semibold tracking-wider uppercase px-4 py-1.5 rounded-full mb-4 border border-brand-200">
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Переваги
+      </div>
       <h2 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-[2.8rem] text-slate-900">Чому модульна технологія?</h2>
+      <p class="text-slate-500 mt-3 max-w-lg mx-auto">Сучасний підхід до будівництва — швидко, чисто, якісно</p>
     </div>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-      <div class="group bg-surface-50 hover:bg-white rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50 reveal">
-        <div class="icon-box w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center mb-5 shadow-lg shadow-emerald-500/20">
-          <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 32 32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="14" width="12" height="14" rx="1.5"/><path d="M4 14l6-5 6 5"/><rect x="7" y="18" width="3" height="3" rx=".5"/><path d="M18 21h3m0 0l-1.5-1.5M21 21l-1.5 1.5"/><rect x="23" y="18" width="6" height="10" rx="1"/><path d="M22 18l4-3 4 3"/><path d="M26 12v2M25 13h2" stroke-width="1.5"/></svg>
+
+    <div class="bento-grid reveal">
+
+      <!-- BIG STAT — navy, span 2 rows -->
+      <div class="bc bc-navy" style="display:flex;flex-direction:column;justify-content:space-between;min-height:280px">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+            <div style="width:42px;height:42px;border-radius:12px;background:rgba(255,140,26,.15);display:flex;align-items:center;justify-content:center">
+              <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#ff8c1a" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <span style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4)">АТГ Сервіс Буд</span>
+          </div>
+          <div class="bc-stat">10<span class="bc-unit">+</span></div>
+          <div style="font-size:20px;font-weight:800;color:#fff;margin-top:4px;font-family:'Outfit',sans-serif">років досвіду</div>
+          <div style="font-size:13px;color:rgba(255,255,255,.4);margin-top:8px;line-height:1.5">Успішних проектів від Карпат до Полісся. Кожен будинок — з гарантією.</div>
         </div>
-        <h3 class="font-display font-semibold text-base text-slate-900 mb-2">Ніякого бруду на ділянці</h3>
-        <p class="text-slate-500 text-sm leading-relaxed">Збираємо в цеху — привозимо готовий будинок. Ділянка чиста.</p>
-      </div>
-      <div class="group bg-surface-50 hover:bg-white rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50 reveal rd1">
-        <div class="icon-box w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mb-5 shadow-lg shadow-amber-500/20">
-          <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 32 32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="3.5"/><path d="M10 4v1.5M10 14.5V16M4 10h1.5M14.5 10H16M5.76 5.76l1.06 1.06M13.18 13.18l1.06 1.06M14.24 5.76l-1.06 1.06M6.82 13.18l-1.06 1.06"/><path d="M24 8v16M20 12l4-4 4 4M20 20l4 4 4-4"/><path d="M8 22l8-5 8 5v6H8v-6z"/></svg>
+        <div style="display:flex;gap:16px;margin-top:24px">
+          <div style="text-align:center">
+            <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:900;color:#ff8c1a;line-height:1">150+</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:600;text-transform:uppercase;letter-spacing:.05em">проектів</div>
+          </div>
+          <div style="width:1px;background:rgba(255,255,255,.08)"></div>
+          <div style="text-align:center">
+            <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:900;color:#ff8c1a;line-height:1">98%</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:600;text-transform:uppercase;letter-spacing:.05em">задоволених</div>
+          </div>
+          <div style="width:1px;background:rgba(255,255,255,.08)"></div>
+          <div style="text-align:center">
+            <div style="font-family:'Outfit',sans-serif;font-size:28px;font-weight:900;color:#ff8c1a;line-height:1">3</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:600;text-transform:uppercase;letter-spacing:.05em">дні монтаж</div>
+          </div>
         </div>
-        <h3 class="font-display font-semibold text-base text-slate-900 mb-2">Енергоефективність</h3>
-        <p class="text-slate-500 text-sm leading-relaxed">Взимку тепло, влітку прохолодно. Краще за цеглу.</p>
       </div>
-      <div class="group bg-surface-50 hover:bg-white rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50 reveal rd2">
-        <div class="icon-box w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center mb-5 shadow-lg shadow-blue-500/20">
-          <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 32 32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 22a11 11 0 0120 0"/><path d="M16 22l5-9" stroke-width="2"/><circle cx="16" cy="22" r="2" fill="currentColor"/><path d="M4 16h3M25 16h3M6.8 9l2.1 2.1M23.2 9l-2.1 2.1"/></svg>
+
+      <!-- SPEED — orange -->
+      <div class="bc bc-orange">
+        <div class="bc-dots"><span style="background:rgba(255,255,255,.2)"></span><span style="background:rgba(255,255,255,.4)"></span><span style="background:#fff"></span></div>
+        <div class="bc-icon" style="background:rgba(255,255,255,.2)">
+          <svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="1.8">
+            <!-- Crane icon -->
+            <path d="M4 20h16M8 20V10M8 10H4M8 10l8-6M16 4v8M16 12l2 2M16 12l-2 2"/><circle cx="8" cy="20" r="1" fill="#fff" stroke="none"/><path d="M12 14v4" stroke-dasharray="2 1.5"/>
+          </svg>
         </div>
-        <h3 class="font-display font-semibold text-base text-slate-900 mb-2">Швидкість — 30 днів</h3>
-        <p class="text-slate-500 text-sm leading-relaxed">Не чекати роками. Від замовлення до заїзду — від 30 днів.</p>
+        <div class="bc-num">01</div>
+        <div class="bc-title">Монтаж від 3 днів</div>
+        <div class="bc-desc" style="color:rgba(255,255,255,.8)">Без бруду, пилу та хаосу. Модуль встановлюється краном і готовий до заселення.</div>
+        <div class="bc-tag" style="background:rgba(255,255,255,.2);color:#fff;margin-top:14px">⚡ Швидко і чисто</div>
       </div>
-      <div class="group bg-surface-50 hover:bg-white rounded-2xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/50 reveal rd3">
-        <div class="icon-box w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-400 to-purple-600 flex items-center justify-center mb-5 shadow-lg shadow-violet-500/20">
-          <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 32 32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="18" width="20" height="8" rx="1.5"/><circle cx="7" cy="28" r="2.5"/><circle cx="17" cy="28" r="2.5"/><path d="M22 18h5l3 4v4h-6"/><circle cx="27" cy="28" r="2.5"/><rect x="5" y="11" width="14" height="7" rx="1"/><path d="M5 11l7-5 7 5"/></svg>
+
+      <!-- QUALITY — white -->
+      <div class="bc bc-white">
+        <div class="bc-dots"><span style="background:#e2e8f0"></span><span style="background:#cbd5e1"></span><span style="background:#1a1e2e"></span></div>
+        <div class="bc-icon" style="background:rgba(26,30,46,.06)">
+          <svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="#1a1e2e" stroke-width="1.8">
+            <!-- Robot arm / QA seal -->
+            <path d="M12 2a5 5 0 015 5v2h1a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V11a2 2 0 012-2h1V7a5 5 0 015-5z"/><circle cx="12" cy="13" r="2.5"/><path d="M10 8.5V7a2 2 0 014 0v1.5"/>
+          </svg>
         </div>
-        <h3 class="font-display font-semibold text-base text-slate-900 mb-2">Мобільність</h3>
-        <p class="text-slate-500 text-sm leading-relaxed">Можна демонтувати та перевезти на іншу ділянку.</p>
+        <div class="bc-title">Заводська точність</div>
+        <div class="bc-desc">Кожен вузол зібраний на виробництві з контролем якості. Гарантія на конструкцію.</div>
+        <div class="bc-tag">✓ Гарантія якості</div>
       </div>
+
+      <!-- ENERGY — white -->
+      <div class="bc bc-white">
+        <div class="bc-icon" style="background:rgba(239,68,68,.08);position:relative">
+          <svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke-width="1.8" viewBox="0 0 24 24">
+            <!-- Flame + snowflake split icon -->
+            <path d="M12 2c0 0-5 4-5 9a5 5 0 0010 0c0-5-5-9-5-9z" stroke="#ef4444" fill="rgba(239,68,68,.1)"/>
+            <path d="M12 8v4" stroke="#3b82f6" stroke-dasharray="2 1"/>
+            <path d="M10 12h4M10.5 10.5l3 3M13.5 10.5l-3 3" stroke="#3b82f6" stroke-width="1.2"/>
+          </svg>
+        </div>
+        <div class="bc-title">W-клас енергоефективності</div>
+        <div class="bc-desc">Сучасна багатошарова ізоляція тримає тепло взимку та прохолоду влітку.</div>
+        <div class="bc-tag">❄️ Завжди комфортно</div>
+      </div>
+
+      <!-- TURNKEY — white card (5th, fills col 3 row 2) -->
+      <div class="bc bc-white">
+        <div class="bc-icon" style="background:rgba(99,102,241,.08)">
+          <svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="#6366f1" stroke-width="1.8">
+            <path d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+          </svg>
+        </div>
+        <div class="bc-title">Під ключ</div>
+        <div class="bc-desc">Проект, виробництво, доставка, монтаж та оздоблення. Лишається тільки завезти меблі.</div>
+        <div class="bc-tag">🏠 Заїжджай одразу</div>
+      </div>
+
+      <!-- FOUNDATION — white, full width -->
+      <div class="bc bc-white bc-wide">
+        <div class="bc-wide-inner">
+          <div class="bc-icon" style="background:rgba(255,140,26,.08);width:64px;height:64px;border-radius:18px">
+            <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="#ff8c1a" stroke-width="1.6">
+              <!-- Minimal foundation footprint -->
+              <rect x="3" y="16" width="18" height="4" rx="1" stroke="#ff8c1a" stroke-dasharray="0"/>
+              <path d="M7 16v-3M12 16v-5M17 16v-3"/>
+              <rect x="5" y="10" width="14" height="3" rx="1" fill="rgba(255,140,26,.1)"/>
+              <path d="M3 14h18" stroke-dasharray="3 2" stroke-width="1"/>
+              <!-- Cross out old pillars -->
+              <path d="M2 6l3 3M5 6L2 9" stroke="#ef4444" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div style="flex:1">
+            <div class="bc-label" style="color:#ff8c1a;opacity:1">Фундамент</div>
+            <div class="bc-title" style="font-size:20px">Не потрібен капітальний фундамент</div>
+            <div class="bc-desc">Модуль встановлюється на гвинтові або стовпчасті опори. Жодних масивних бетонних робіт, жодного порушення ландшафту. <strong style="color:#1a1e2e">Економія до 40% на фундаменті.</strong></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0">
+            <div style="background:#f1f5f9;border-radius:12px;padding:12px 16px;text-align:center">
+              <div style="font-family:'Outfit',sans-serif;font-size:24px;font-weight:900;color:#1a1e2e">−40%</div>
+              <div style="font-size:10px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.05em">вартість фунд.</div>
+            </div>
+            <div style="background:#fff7ed;border-radius:12px;padding:12px 16px;text-align:center;border:1px solid #fed7aa">
+              <div style="font-family:'Outfit',sans-serif;font-size:24px;font-weight:900;color:#ff8c1a">1 день</div>
+              <div style="font-size:10px;color:#92400e;font-weight:600;text-transform:uppercase;letter-spacing:.05em">встановлення</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
