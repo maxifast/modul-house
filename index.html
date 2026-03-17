@@ -15,7 +15,7 @@
             surface: {50:'#fafbfc',100:'#f4f6f8',200:'#ebeef2',300:'#dde1e7',400:'#c4cad3'}
           },
           fontFamily: {
-            display: ['Outfit','sans-serif'],
+            display: ['Unbounded','sans-serif'],
             body: ['DM Sans','sans-serif'],
             mono: ['JetBrains Mono','monospace']
           }
@@ -25,12 +25,13 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <!-- No Three.js needed — image-based hero -->
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{font-family:'DM Sans',sans-serif;color:#1a1e2e;background:#fff;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    .font-display{font-family:'Unbounded',sans-serif!important}
     ::-webkit-scrollbar{width:5px}
     ::-webkit-scrollbar-track{background:#f4f6f8}
     ::-webkit-scrollbar-thumb{background:#c4cad3;border-radius:3px}
@@ -110,7 +111,7 @@
     .badge-price{background:rgba(26,30,46,.85);backdrop-filter:blur(6px);color:#fff;font-size:12px;font-weight:700;padding:6px 12px;border-radius:4px}
     .badge-area{background:#ff8c1a;color:#fff;font-size:12px;font-weight:700;padding:6px 12px;border-radius:4px}
     .model-body{padding:20px}
-    .model-title{font-family:'Outfit',sans-serif;font-weight:800;font-size:20px;color:#1a1e2e;text-transform:uppercase;letter-spacing:.02em;margin-bottom:16px}
+    .model-title{font-family:'Unbounded',sans-serif;font-weight:800;font-size:20px;color:#1a1e2e;text-transform:uppercase;letter-spacing:.02em;margin-bottom:16px}
     .model-specs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
     .spec-item{display:flex;align-items:center;gap:8px;font-size:13px;color:#4b5563}
     .spec-item svg{width:16px;height:16px;color:#94a3b8;flex-shrink:0}
@@ -131,7 +132,7 @@
     /* ── Hit card (bestseller) ── */
     .model-card.hit{border:2px solid #ff8c1a;box-shadow:0 4px 24px rgba(255,140,26,.15);position:relative;transform:scale(1.02)}
     .model-card.hit:hover{box-shadow:0 8px 36px rgba(255,140,26,.22)}
-    .hit-label{text-align:center;color:#ff8c1a;font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:0 0 8px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .hit-label{text-align:center;color:#ff8c1a;font-family:'Unbounded',sans-serif;font-size:15px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:0 0 8px;display:flex;align-items:center;justify-content:center;gap:6px}
     .model-card.hit .detail-btn{background:linear-gradient(135deg,#ff8c1a,#f59e0b);border:none;color:#fff;font-weight:700}
     .model-card.hit .detail-btn:hover{background:linear-gradient(135deg,#f59e0b,#ff8c1a);box-shadow:0 4px 16px rgba(255,140,26,.35)}
 
@@ -159,13 +160,13 @@
     .bc:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.1)}
     /* Navy big stat card */
     .bc-navy{background:#1a1e2e;color:#fff;grid-row:span 2}
-    .bc-navy .bc-stat{font-family:'Outfit',sans-serif;font-size:72px;font-weight:900;line-height:1;letter-spacing:-3px;background:linear-gradient(135deg,#ff8c1a,#ffb347);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .bc-navy .bc-stat{font-family:'Unbounded',sans-serif;font-size:72px;font-weight:900;line-height:1;letter-spacing:-3px;background:linear-gradient(135deg,#ff8c1a,#ffb347);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     @media(min-width:1024px){.bc-navy .bc-stat{font-size:96px;letter-spacing:-4px}.stat-num{font-size:38px!important}}
     .bc-navy .bc-unit{font-size:22px;font-weight:700;color:rgba(255,255,255,.5);margin-left:4px;vertical-align:top;margin-top:12px;display:inline-block;-webkit-text-fill-color:rgba(255,255,255,.5)}
     .bc-navy::after{content:'';position:absolute;bottom:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(255,140,26,.15) 0%,transparent 70%)}
     /* Orange accent card */
     .bc-orange{background:linear-gradient(135deg,#ff8c1a,#ff6b00);color:#fff}
-    .bc-orange .bc-num{font-family:'Outfit',sans-serif;font-size:48px;font-weight:900;line-height:1;letter-spacing:-2px;color:rgba(255,255,255,.2)}
+    .bc-orange .bc-num{font-family:'Unbounded',sans-serif;font-size:48px;font-weight:900;line-height:1;letter-spacing:-2px;color:rgba(255,255,255,.2)}
     /* White cards */
     .bc-white{background:#fff;box-shadow:0 2px 16px rgba(0,0,0,.05)}
     /* Wide bottom card */
@@ -176,7 +177,7 @@
     .bc-icon{width:52px;height:52px;border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;flex-shrink:0}
     .bc-icon svg{width:26px;height:26px}
     .bc-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;opacity:.5}
-    .bc-title{font-family:'Outfit',sans-serif;font-size:17px;font-weight:800;line-height:1.25;color:#1a1e2e}
+    .bc-title{font-family:'Unbounded',sans-serif;font-size:17px;font-weight:800;line-height:1.25;color:#1a1e2e}
     .bc-navy .bc-title,.bc-orange .bc-title{color:#fff}
     .bc-desc{font-size:13px;color:#64748b;margin-top:6px;line-height:1.5}
     .bc-navy .bc-desc{color:rgba(255,255,255,.45)}
@@ -212,7 +213,7 @@
     .qz-markers{display:flex;justify-content:space-between;padding:0 2px;margin-top:6px}
     .qz-markers span{position:relative;font-size:10px;color:#94a3b8;font-weight:600;cursor:pointer;padding:4px 0}
     .qz-markers span::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:2px;height:6px;background:#cbd5e1;border-radius:1px}
-    .qz-btn-next{background:linear-gradient(135deg,#ff8c1a,#ff6b00);color:#fff;font-weight:700;font-size:14px;padding:14px 28px;border-radius:6px;border:none;cursor:pointer;transition:all .2s;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:8px;box-shadow:0 4px 14px rgba(255,140,26,.25)}
+    .qz-btn-next{background:linear-gradient(135deg,#ff8c1a,#ff6b00);color:#fff;font-weight:700;font-size:14px;padding:14px 28px;border-radius:6px;border:none;cursor:pointer;transition:all .2s;font-family:'Unbounded',sans-serif;display:flex;align-items:center;gap:8px;box-shadow:0 4px 14px rgba(255,140,26,.25)}
     .qz-btn-next:hover{box-shadow:0 6px 20px rgba(255,140,26,.35);transform:translateY(-1px)}
     .qz-btn-back{background:none;border:2px solid #e2e8f0;color:#64748b;font-weight:600;font-size:14px;padding:14px 24px;border-radius:6px;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
     .qz-btn-back:hover{border-color:#cbd5e1;color:#334155}
@@ -490,7 +491,7 @@
             <span style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4)">АТГ Сервіс Буд</span>
           </div>
           <div class="bc-stat">14<span class="bc-unit">+</span></div>
-          <div style="font-size:20px;font-weight:800;color:#fff;margin-top:4px;font-family:'Outfit',sans-serif">років досвіду</div>
+          <div style="font-size:20px;font-weight:800;color:#fff;margin-top:4px;font-family:'Unbounded',sans-serif">років досвіду</div>
           <div style="font-size:13px;color:rgba(255,255,255,.4);margin-top:8px;line-height:1.5">Успішних проектів від Карпат до Полісся. Кожен будинок — з гарантією.</div>
           <div style="margin-top:20px;display:flex;flex-direction:column;gap:8px">
             <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.5)">
@@ -506,17 +507,17 @@
         </div>
         <div style="display:flex;gap:16px;margin-top:24px;justify-content:center">
           <div style="text-align:center;flex:1">
-            <div class="stat-num" style="font-family:'Outfit',sans-serif;font-size:32px;font-weight:900;color:#ff8c1a;line-height:1">150+</div>
+            <div class="stat-num" style="font-family:'Unbounded',sans-serif;font-size:32px;font-weight:900;color:#ff8c1a;line-height:1">150+</div>
             <div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:600;text-transform:uppercase;letter-spacing:.05em">проектів</div>
           </div>
           <div style="width:1px;background:rgba(255,255,255,.08)"></div>
           <div style="text-align:center;flex:1">
-            <div class="stat-num" style="font-family:'Outfit',sans-serif;font-size:32px;font-weight:900;color:#ff8c1a;line-height:1">98%</div>
+            <div class="stat-num" style="font-family:'Unbounded',sans-serif;font-size:32px;font-weight:900;color:#ff8c1a;line-height:1">98%</div>
             <div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:600;text-transform:uppercase;letter-spacing:.05em">задоволених</div>
           </div>
           <div style="width:1px;background:rgba(255,255,255,.08)"></div>
           <div style="text-align:center;flex:1">
-            <div class="stat-num" style="font-family:'Outfit',sans-serif;font-size:32px;font-weight:900;color:#ff8c1a;line-height:1">3</div>
+            <div class="stat-num" style="font-family:'Unbounded',sans-serif;font-size:32px;font-weight:900;color:#ff8c1a;line-height:1">3</div>
             <div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:600;text-transform:uppercase;letter-spacing:.05em">дні монтаж</div>
           </div>
         </div>
@@ -599,11 +600,11 @@
           </div>
           <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0">
             <div style="background:#f1f5f9;border-radius:12px;padding:12px 16px;text-align:center">
-              <div style="font-family:'Outfit',sans-serif;font-size:24px;font-weight:900;color:#1a1e2e">−40%</div>
+              <div style="font-family:'Unbounded',sans-serif;font-size:24px;font-weight:900;color:#1a1e2e">−40%</div>
               <div style="font-size:10px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.05em">вартість фунд.</div>
             </div>
             <div style="background:#fff7ed;border-radius:12px;padding:12px 16px;text-align:center;border:1px solid #fed7aa">
-              <div style="font-family:'Outfit',sans-serif;font-size:24px;font-weight:900;color:#ff8c1a">1 день</div>
+              <div style="font-family:'Unbounded',sans-serif;font-size:24px;font-weight:900;color:#ff8c1a">1 день</div>
               <div style="font-size:10px;color:#92400e;font-weight:600;text-transform:uppercase;letter-spacing:.05em">встановлення</div>
             </div>
           </div>
